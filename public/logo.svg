@@ -1,9 +1,6 @@
-<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background (optional, remove rect for transparent) -->
-  <rect width="400" height="200" fill="#ffffff"/>
-  
+<svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg">
   <!-- Logo Mark - Stylized Star and Field Rows -->
-  <g id="logomark" transform="translate(80, 100)">
+  <g id="logomark" transform="translate(80, 75)">
     <!-- Field rows (simplified agricultural rows) -->
     <path d="M -25 15 Q -15 12, -5 15 T 15 15 T 35 15" 
           stroke="#4a7c59" 
@@ -40,7 +37,7 @@
   </g>
   
   <!-- Company Name -->
-  <g id="company-name" transform="translate(140, 85)">
+  <g id="company-name" transform="translate(140, 60)">
     <!-- "STARFIELD" -->
     <text x="0" y="0" 
           font-family="Arial, sans-serif" 
@@ -74,7 +71,7 @@
   </g>
   
   <!-- Decorative elements - small stars -->
-  <circle cx="330" cy="75" r="1.5" fill="#ffc857" opacity="0.7"/>
-  <circle cx="340" cy="85" r="1" fill="#ffc857" opacity="0.5"/>
-  <circle cx="325" cy="95" r="1.2" fill="#ffc857" opacity="0.6"/>
+  <circle cx="330" cy="50" r="1.5" fill="#ffc857" opacity="0.7"/>
+  <circle cx="340" cy="60" r="1" fill="#ffc857" opacity="0.5"/>
+  <circle cx="325" cy="70" r="1.2" fill="#ffc857" opacity="0.6"/>
 </svg>

@@ -1,5 +1,6 @@
 import { AppBar, Toolbar, Typography, CircularProgress, Box } from "@mui/material";
 import { useDataStore } from "./DataStoreProvider";
+import { lighten } from '@mui/material/styles';
 
 interface NavBarProps {
     height?: number;
@@ -19,14 +20,14 @@ export default function NavBar({
             position="fixed"
             sx={{
                 boxShadow: 3,
-                backgroundColor: 'navbarColor.main',
+                backgroundColor: (theme) => lighten(theme.palette.primary.main, 0.5),
             }}
         >
             <Toolbar
                 sx={{
                     display: "flex",
                     flexDirection: "row",
-                    justifyContent: "space-between",
+                    justifyContent: "left",
                     alignItems: "center",
                     width: "100%",
                     px: 2,
@@ -35,10 +36,20 @@ export default function NavBar({
                 }}
             >
                 {/* Left */}
+                <Box
+                    component="img"
+                    sx={{
+                        height: '100%',
+                        width: 'auto',
+                    }}
+                    src="../public/logo.svg"
+                    alt="Starfiel AG"
+                />
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography
                         variant="body1"
                         sx={{
+                            ml:2, 
                             fontSize: 'clamp(0.8rem, 2.5vw, 1.5rem)',
                             fontWeight: 'bold',
                             color: 'black',
