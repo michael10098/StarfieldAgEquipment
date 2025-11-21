@@ -1,5 +1,5 @@
 import { generateClient } from "aws-amplify/api";
-import { CreditRating, CustomerTier, FarmCategory, OwnershipStructure, PaymentTerms, PreferredContactMethod, ReferralPotential, TechnologyAdoption } from "./Types";
+import { CreditRating, CustomerTier, FarmCategory, OwnershipStructure, PaymentTerms, ContactMethod, AdoptionLevel, ReferralPotential } from "./Types";
 import { Schema } from "../amplify/data/resource";
 
 const client = generateClient<Schema>();
@@ -55,7 +55,7 @@ const farmCustomersData = [
     officePhone: "(641) 847-3921",
     mobilePhone: "(641) 555-0142",
     email: "mike@hendersonfarms.com",
-    preferredContactMethod: PreferredContactMethod.EMAIL,
+    preferredContactMethod: ContactMethod.EMAIL,
     preferredContactTimes: "Weekdays 7-9 AM or after 6 PM",
 
     // Tab 3: Farm Operations
@@ -91,13 +91,13 @@ const farmCustomersData = [
     annualPurchaseVolumeMin: 75000,
     annualPurchaseVolumeMax: 120000,
     lastContactDate: "2024-11-06",
-    lastContactMethod: PreferredContactMethod.MOBILE,
+    lastContactMethod: ContactMethod.MOBILE,
     lastContactNotes: "Service follow-up, very satisfied with recent planter upgrade",
     buyingPatterns: "Major purchases February-March, parts throughout season",
 
     // Tab 7: Strategic Planning
     growthPlans: "Negotiating lease on additional 200 acres for 2026",
-    technologyAdoption: TechnologyAdoption.HIGH,
+    technologyAdoption: AdoptionLevel.HIGH,
     certifications: [],
     specialRequirements: "Prefers equipment with extended warranties",
     competitorRelationships: "Also purchases from local John Deere dealer",
@@ -197,7 +197,7 @@ const farmCustomersData = [
     officePhone: "(785) 462-7733",
     mobilePhone: "(785) 555-0198",
     email: "rjameson@riversideag.com",
-    preferredContactMethod: PreferredContactMethod.EMAIL,
+    preferredContactMethod: ContactMethod.EMAIL,
     preferredContactTimes: "Office hours 8 AM - 5 PM",
 
     farmCategory: FarmCategory.GRAIN_ROW_CROP,
@@ -229,12 +229,12 @@ const farmCustomersData = [
     annualPurchaseVolumeMin: 180000,
     annualPurchaseVolumeMax: 250000,
     lastContactDate: "2024-11-13",
-    lastContactMethod: PreferredContactMethod.EMAIL,
+    lastContactMethod: ContactMethod.EMAIL,
     lastContactNotes: "Parts order for combine maintenance",
     buyingPatterns: "Major purchases December-January, regular parts orders",
 
     growthPlans: "Expanding custom harvesting to 3-state region",
-    technologyAdoption: TechnologyAdoption.VERY_HIGH,
+    technologyAdoption: AdoptionLevel.VERY_HIGH,
     certifications: ["Commercial Applicator License"],
     specialRequirements: "Fast parts delivery for custom harvesting season",
     competitorRelationships: "Exclusive relationship with our dealership",
@@ -330,7 +330,7 @@ const farmCustomersData = [
     officePhone: "(402) 765-4412",
     mobilePhone: "(402) 555-0223",
     email: "james@prairieviewne.com",
-    preferredContactMethod: PreferredContactMethod.TEXT,
+    preferredContactMethod: ContactMethod.TEXT,
     preferredContactTimes: "Calls after 7 PM",
 
     farmCategory: FarmCategory.GRAIN_ROW_CROP,
@@ -362,12 +362,12 @@ const farmCustomersData = [
     annualPurchaseVolumeMin: 35000,
     annualPurchaseVolumeMax: 65000,
     lastContactDate: "2024-10-30",
-    lastContactMethod: PreferredContactMethod.TEXT,
+    lastContactMethod: ContactMethod.TEXT,
     lastContactNotes: "Parts inquiry for grain trailer",
     buyingPatterns: "Prefers late-season purchases, open to used equipment",
 
     growthPlans: "Modest expansion, focusing on efficiency over size",
-    technologyAdoption: TechnologyAdoption.MEDIUM,
+    technologyAdoption: AdoptionLevel.MEDIUM,
     certifications: [],
     specialRequirements: "Flexible financing options important",
     competitorRelationships: "Shops multiple dealers for best pricing",
@@ -455,7 +455,7 @@ const farmCustomersData = [
     officePhone: "(815) 269-5581",
     mobilePhone: "(815) 555-0267",
     email: "patricia@meadowbrookgrain.com",
-    preferredContactMethod: PreferredContactMethod.EMAIL,
+    preferredContactMethod: ContactMethod.EMAIL,
     preferredContactTimes: "Email preferred, phone for urgent matters",
 
     farmCategory: FarmCategory.GRAIN_ROW_CROP,
@@ -487,12 +487,12 @@ const farmCustomersData = [
     annualPurchaseVolumeMin: 95000,
     annualPurchaseVolumeMax: 140000,
     lastContactDate: "2024-11-15",
-    lastContactMethod: PreferredContactMethod.EMAIL,
+    lastContactMethod: ContactMethod.EMAIL,
     lastContactNotes: "Seasonal payment setup completed",
     buyingPatterns: "Strategic purchases pre-season, technology upgrades mid-year",
 
     growthPlans: "Adding on-farm grain storage capacity, potential land purchase",
-    technologyAdoption: TechnologyAdoption.HIGH,
+    technologyAdoption: AdoptionLevel.HIGH,
     certifications: ["Certified Grain Handler"],
     specialRequirements: "Priority service during harvest season",
     competitorRelationships: "Loyal to dealership, occasional parts from other sources",
@@ -597,7 +597,7 @@ const farmCustomersData = [
     officePhone: "(406) 232-8891",
     mobilePhone: "(406) 555-0334",
     email: "rusty@triplerranchmontana.com",
-    preferredContactMethod: PreferredContactMethod.MOBILE,
+    preferredContactMethod: ContactMethod.MOBILE,
     preferredContactTimes: "Available most times",
 
     farmCategory: FarmCategory.LIVESTOCK,
@@ -629,12 +629,12 @@ const farmCustomersData = [
     annualPurchaseVolumeMin: 85000,
     annualPurchaseVolumeMax: 125000,
     lastContactDate: "2024-11-13",
-    lastContactMethod: PreferredContactMethod.MOBILE,
+    lastContactMethod: ContactMethod.MOBILE,
     lastContactNotes: "Parts order for baler repair",
     buyingPatterns: "Major purchases November-December, parts/repairs throughout year",
 
     growthPlans: "Expanding herd to 600 head, adding rotational grazing infrastructure",
-    technologyAdoption: TechnologyAdoption.MEDIUM,
+    technologyAdoption: AdoptionLevel.MEDIUM,
     certifications: ["Beef Quality Assurance (BQA)"],
     specialRequirements: "Equipment must handle rough terrain, reliable in remote conditions",
     competitorRelationships: "Uses multiple dealers for parts availability",
@@ -732,7 +732,7 @@ const farmCustomersData = [
     officePhone: "(715) 384-6729",
     mobilePhone: "(715) 555-0401",
     email: "dan@cloverdaledairy.com",
-    preferredContactMethod: PreferredContactMethod.EMAIL,
+    preferredContactMethod: ContactMethod.EMAIL,
     preferredContactTimes: "Email during business hours, emergency mobile",
 
     farmCategory: FarmCategory.LIVESTOCK,
@@ -764,12 +764,12 @@ const farmCustomersData = [
     annualPurchaseVolumeMin: 55000,
     annualPurchaseVolumeMax: 85000,
     lastContactDate: "2024-11-06",
-    lastContactMethod: PreferredContactMethod.MOBILE,
+    lastContactMethod: ContactMethod.MOBILE,
     lastContactNotes: "Service call for mixer wagon hydraulics",
     buyingPatterns: "Purchases when necessary, price-sensitive, considers used equipment",
 
     growthPlans: "Focus on efficiency over expansion, possible robotic milking system in 3-5 years",
-    technologyAdoption: TechnologyAdoption.MEDIUM,
+    technologyAdoption: AdoptionLevel.MEDIUM,
     certifications: ["FARM Certified", "Wisconsin DATCP Certified"],
     specialRequirements: "Equipment uptime critical for daily operations, flexible financing important",
     competitorRelationships: "Shops multiple dealers for best value",
@@ -866,7 +866,7 @@ const farmCustomersData = [
     officePhone: "(573) 796-4423",
     mobilePhone: "(573) 555-0478",
     email: "ray@sunsethillslivestock.com",
-    preferredContactMethod: PreferredContactMethod.MOBILE,
+    preferredContactMethod: ContactMethod.MOBILE,
     preferredContactTimes: "Mobile call or text anytime",
 
     farmCategory: FarmCategory.LIVESTOCK,
@@ -898,12 +898,12 @@ const farmCustomersData = [
     annualPurchaseVolumeMin: 95000,
     annualPurchaseVolumeMax: 135000,
     lastContactDate: "2024-11-16",
-    lastContactMethod: PreferredContactMethod.EMAIL,
+    lastContactMethod: ContactMethod.EMAIL,
     lastContactNotes: "Quote request for replacement equipment",
     buyingPatterns: "Strategic purchases in winter, immediate needs as they arise",
 
     growthPlans: "Expanding hog finishing capacity by 400 head, modernizing facilities",
-    technologyAdoption: TechnologyAdoption.MEDIUM_HIGH,
+    technologyAdoption: AdoptionLevel.MEDIUM_HIGH,
     certifications: ["Pork Quality Assurance Plus (PQA+)"],
     specialRequirements: "Fast parts delivery during livestock emergencies",
     competitorRelationships: "Primary dealer relationship with company, occasional parts from others",
@@ -1001,7 +1001,7 @@ const farmCustomersData = [
     officePhone: "(830) 868-5531",
     mobilePhone: "(830) 555-0512",
     email: "victoria@heritagevalleyranch.com",
-    preferredContactMethod: PreferredContactMethod.EMAIL,
+    preferredContactMethod: ContactMethod.EMAIL,
     preferredContactTimes: "Email preferred, available for calls 6-8 PM",
 
     farmCategory: FarmCategory.LIVESTOCK,
@@ -1033,12 +1033,12 @@ const farmCustomersData = [
     annualPurchaseVolumeMin: 65000,
     annualPurchaseVolumeMax: 90000,
     lastContactDate: "2024-11-10",
-    lastContactMethod: PreferredContactMethod.EMAIL,
+    lastContactMethod: ContactMethod.EMAIL,
     lastContactNotes: "Agritourism discussion at customer event",
     buyingPatterns: "Thoughtful purchases aligned with sustainable ranching practices",
 
     growthPlans: "Expanding direct-to-consumer sales, adding on-farm processing facility",
-    technologyAdoption: TechnologyAdoption.MEDIUM,
+    technologyAdoption: AdoptionLevel.MEDIUM,
     certifications: ["American Grassfed Association", "Certified Humane"],
     specialRequirements: "Interested in sustainable/regenerative agriculture equipment",
     competitorRelationships: "Loyal to dealers who understand sustainable agriculture",
