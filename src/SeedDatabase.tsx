@@ -1,8 +1,6 @@
-// Farm Customer Seed Data for AWS Amplify GraphQL Database
-// Import this file and use the seedDatabase function to populate your database
-
-import { generateClient } from 'aws-amplify/data';
-import type { Schema } from '../amplify/data/resource'; // Adjust path as needed
+import { generateClient } from "aws-amplify/api";
+import { CreditRating, CustomerTier, FarmCategory, OwnershipStructure, PaymentTerms, PreferredContactMethod, ReferralPotential, TechnologyAdoption } from "./Types";
+import { Schema } from "../amplify/data/resource";
 
 const client = generateClient<Schema>();
 
@@ -12,16 +10,16 @@ async function handleApiCall<T>(
   errorContext: string
 ): Promise<T> {
   const result = await promise;
-  
+
   if (result.errors) {
     console.error(`Error in ${errorContext}:`, result.errors);
     throw new Error(`${errorContext} failed: ${JSON.stringify(result.errors)}`);
   }
-  
+
   if (!result.data) {
     throw new Error(`${errorContext} returned no data`);
   }
-  
+
   return result.data;
 }
 
@@ -36,7 +34,7 @@ const farmCustomersData = [
     taxId: "42-1847562",
     yearsInOperation: 47,
     establishedYear: 1978,
-    ownershipStructure: "FAMILY_LLC",
+    ownershipStructure: OwnershipStructure.FAMILY_LLC,
     primaryContactName: "Michael Henderson",
     primaryContactRole: "Owner/Operator",
     primaryContactPhone: "(641) 847-3921",
@@ -57,11 +55,11 @@ const farmCustomersData = [
     officePhone: "(641) 847-3921",
     mobilePhone: "(641) 555-0142",
     email: "mike@hendersonfarms.com",
-    preferredContactMethod: "MOBILE",
+    preferredContactMethod: PreferredContactMethod.EMAIL,
     preferredContactTimes: "Weekdays 7-9 AM or after 6 PM",
 
     // Tab 3: Farm Operations
-    farmCategory: "GRAIN_ROW_CROP",
+    farmCategory: FarmCategory.GRAIN_ROW_CROP,
     totalAcreage: 800,
     ownedAcreage: 650,
     leasedAcreage: 150,
@@ -71,8 +69,8 @@ const farmCustomersData = [
     seasonalEmployees: 3,
 
     // Tab 4: Financial Information
-    creditRating: "A_MINUS",
-    paymentTerms: "NET_45",
+    creditRating: CreditRating.A_MINUS,
+    paymentTerms: PaymentTerms.NET_45,
     creditLimit: 250000,
     paymentHistory: "Excellent - always pays within terms",
     annualRevenueEstimate: 850000,
@@ -89,21 +87,21 @@ const farmCustomersData = [
 
     // Tab 6: Sales & Relationship
     accountManager: "Jennifer Martinez",
-    customerTier: "GOLD",
+    customerTier: CustomerTier.GOLD,
     annualPurchaseVolumeMin: 75000,
     annualPurchaseVolumeMax: 120000,
     lastContactDate: "2024-11-06",
-    lastContactMethod: "MOBILE",
+    lastContactMethod: PreferredContactMethod.MOBILE,
     lastContactNotes: "Service follow-up, very satisfied with recent planter upgrade",
     buyingPatterns: "Major purchases February-March, parts throughout season",
 
     // Tab 7: Strategic Planning
     growthPlans: "Negotiating lease on additional 200 acres for 2026",
-    technologyAdoption: "HIGH",
+    technologyAdoption: TechnologyAdoption.HIGH,
     certifications: [],
     specialRequirements: "Prefers equipment with extended warranties",
     competitorRelationships: "Also purchases from local John Deere dealer",
-    referralPotential: "HIGH",
+    referralPotential: ReferralPotential.HIGH,
     referralNotes: "Well-respected in county farm bureau",
 
     // Tab 8: Logistics & Delivery
@@ -175,7 +173,7 @@ const farmCustomersData = [
     taxId: "48-2934716",
     yearsInOperation: 62,
     establishedYear: 1963,
-    ownershipStructure: "S_CORP",
+    ownershipStructure: OwnershipStructure.S_CORP,
     primaryContactName: "Robert Jameson",
     primaryContactRole: "CEO",
     primaryContactPhone: "(785) 462-7733",
@@ -199,10 +197,10 @@ const farmCustomersData = [
     officePhone: "(785) 462-7733",
     mobilePhone: "(785) 555-0198",
     email: "rjameson@riversideag.com",
-    preferredContactMethod: "EMAIL",
+    preferredContactMethod: PreferredContactMethod.EMAIL,
     preferredContactTimes: "Office hours 8 AM - 5 PM",
 
-    farmCategory: "GRAIN_ROW_CROP",
+    farmCategory: FarmCategory.GRAIN_ROW_CROP,
     totalAcreage: 1200,
     ownedAcreage: 1200,
     leasedAcreage: 0,
@@ -211,8 +209,8 @@ const farmCustomersData = [
     fullTimeEmployees: 4,
     seasonalEmployees: 6,
 
-    creditRating: "A_PLUS",
-    paymentTerms: "NET_30",
+    creditRating: CreditRating.A_PLUS,
+    paymentTerms: PaymentTerms.NET_30,
     creditLimit: 400000,
     paymentHistory: "Excellent - early pay discount user",
     annualRevenueEstimate: 1400000,
@@ -227,20 +225,20 @@ const farmCustomersData = [
     equipmentNotes: "Fleet is well-maintained, operates custom harvesting business",
 
     accountManager: "Marcus Thompson",
-    customerTier: "PLATINUM",
+    customerTier: CustomerTier.PLATINUM,
     annualPurchaseVolumeMin: 180000,
     annualPurchaseVolumeMax: 250000,
     lastContactDate: "2024-11-13",
-    lastContactMethod: "EMAIL",
+    lastContactMethod: PreferredContactMethod.EMAIL,
     lastContactNotes: "Parts order for combine maintenance",
     buyingPatterns: "Major purchases December-January, regular parts orders",
 
     growthPlans: "Expanding custom harvesting to 3-state region",
-    technologyAdoption: "VERY_HIGH",
+    technologyAdoption: TechnologyAdoption.VERY_HIGH,
     certifications: ["Commercial Applicator License"],
     specialRequirements: "Fast parts delivery for custom harvesting season",
     competitorRelationships: "Exclusive relationship with our dealership",
-    referralPotential: "VERY_HIGH",
+    referralPotential: ReferralPotential.VERY_HIGH,
     referralNotes: "Refers custom harvesting clients regularly",
 
     deliveryStreet: "8845 Highway 24",
@@ -312,7 +310,7 @@ const farmCustomersData = [
     taxId: "47-3821945",
     yearsInOperation: 35,
     establishedYear: 1990,
-    ownershipStructure: "FAMILY_LLC",
+    ownershipStructure: OwnershipStructure.FAMILY_LLC,
     primaryContactName: "James Liu",
     primaryContactRole: "Managing Partner",
     primaryContactPhone: "(402) 765-4412",
@@ -332,10 +330,10 @@ const farmCustomersData = [
     officePhone: "(402) 765-4412",
     mobilePhone: "(402) 555-0223",
     email: "james@prairieviewne.com",
-    preferredContactMethod: "TEXT",
+    preferredContactMethod: PreferredContactMethod.TEXT,
     preferredContactTimes: "Calls after 7 PM",
 
-    farmCategory: "GRAIN_ROW_CROP",
+    farmCategory: FarmCategory.GRAIN_ROW_CROP,
     totalAcreage: 650,
     ownedAcreage: 550,
     leasedAcreage: 100,
@@ -344,8 +342,8 @@ const farmCustomersData = [
     fullTimeEmployees: 3,
     seasonalEmployees: 2,
 
-    creditRating: "BBB_PLUS",
-    paymentTerms: "NET_60",
+    creditRating: CreditRating.BBB_PLUS,
+    paymentTerms: PaymentTerms.NET_60,
     creditLimit: 175000,
     paymentHistory: "Good - occasional delays (5-10 days) during harvest",
     annualRevenueEstimate: 625000,
@@ -360,20 +358,20 @@ const farmCustomersData = [
     equipmentNotes: "Mix of new and used equipment, cost-conscious buyers",
 
     accountManager: "Jennifer Martinez",
-    customerTier: "SILVER",
+    customerTier: CustomerTier.SILVER,
     annualPurchaseVolumeMin: 35000,
     annualPurchaseVolumeMax: 65000,
     lastContactDate: "2024-10-30",
-    lastContactMethod: "TEXT",
+    lastContactMethod: PreferredContactMethod.TEXT,
     lastContactNotes: "Parts inquiry for grain trailer",
     buyingPatterns: "Prefers late-season purchases, open to used equipment",
 
     growthPlans: "Modest expansion, focusing on efficiency over size",
-    technologyAdoption: "MEDIUM",
+    technologyAdoption: TechnologyAdoption.MEDIUM,
     certifications: [],
     specialRequirements: "Flexible financing options important",
     competitorRelationships: "Shops multiple dealers for best pricing",
-    referralPotential: "MEDIUM",
+    referralPotential: ReferralPotential.MEDIUM,
     referralNotes: "Conservative with recommendations",
 
     deliveryStreet: "12670 Road 330",
@@ -437,7 +435,7 @@ const farmCustomersData = [
     taxId: "36-4729183",
     yearsInOperation: 28,
     establishedYear: 1997,
-    ownershipStructure: "CORPORATION",
+    ownershipStructure: OwnershipStructure.CORPORATION,
     primaryContactName: "Patricia Anderson",
     primaryContactRole: "President",
     primaryContactPhone: "(815) 269-5581",
@@ -457,10 +455,10 @@ const farmCustomersData = [
     officePhone: "(815) 269-5581",
     mobilePhone: "(815) 555-0267",
     email: "patricia@meadowbrookgrain.com",
-    preferredContactMethod: "EMAIL",
+    preferredContactMethod: PreferredContactMethod.EMAIL,
     preferredContactTimes: "Email preferred, phone for urgent matters",
 
-    farmCategory: "GRAIN_ROW_CROP",
+    farmCategory: FarmCategory.GRAIN_ROW_CROP,
     totalAcreage: 900,
     ownedAcreage: 700,
     leasedAcreage: 200,
@@ -469,8 +467,8 @@ const farmCustomersData = [
     fullTimeEmployees: 3,
     seasonalEmployees: 4,
 
-    creditRating: "A",
-    paymentTerms: "NET_30",
+    creditRating: CreditRating.A,
+    paymentTerms: PaymentTerms.NET_30,
     creditLimit: 300000,
     paymentHistory: "Excellent - uses seasonal payment plan effectively",
     annualRevenueEstimate: 950000,
@@ -485,20 +483,20 @@ const farmCustomersData = [
     equipmentNotes: "Invests in technology upgrades, excellent maintenance",
 
     accountManager: "Marcus Thompson",
-    customerTier: "GOLD",
+    customerTier: CustomerTier.GOLD,
     annualPurchaseVolumeMin: 95000,
     annualPurchaseVolumeMax: 140000,
     lastContactDate: "2024-11-15",
-    lastContactMethod: "EMAIL",
+    lastContactMethod: PreferredContactMethod.EMAIL,
     lastContactNotes: "Seasonal payment setup completed",
     buyingPatterns: "Strategic purchases pre-season, technology upgrades mid-year",
 
     growthPlans: "Adding on-farm grain storage capacity, potential land purchase",
-    technologyAdoption: "HIGH",
+    technologyAdoption: TechnologyAdoption.HIGH,
     certifications: ["Certified Grain Handler"],
     specialRequirements: "Priority service during harvest season",
     competitorRelationships: "Loyal to dealership, occasional parts from other sources",
-    referralPotential: "HIGH",
+    referralPotential: ReferralPotential.HIGH,
     referralNotes: "Active in Illinois Farm Bureau, grain co-op board member",
 
     deliveryStreet: "6234 East 2100 North Road",
@@ -575,7 +573,7 @@ const farmCustomersData = [
     taxId: "81-5847291",
     yearsInOperation: 54,
     establishedYear: 1971,
-    ownershipStructure: "LIMITED_PARTNERSHIP",
+    ownershipStructure: OwnershipStructure.LIMITED_PARTNERSHIP,
     primaryContactName: "Russell Roberts III",
     primaryContactRole: "General Partner",
     primaryContactPhone: "(406) 232-8891",
@@ -599,10 +597,10 @@ const farmCustomersData = [
     officePhone: "(406) 232-8891",
     mobilePhone: "(406) 555-0334",
     email: "rusty@triplerranchmontana.com",
-    preferredContactMethod: "MOBILE",
+    preferredContactMethod: PreferredContactMethod.MOBILE,
     preferredContactTimes: "Available most times",
 
-    farmCategory: "LIVESTOCK",
+    farmCategory: FarmCategory.LIVESTOCK,
     totalAcreage: 2400,
     ownedAcreage: 2400,
     leasedAcreage: 0,
@@ -611,8 +609,8 @@ const farmCustomersData = [
     fullTimeEmployees: 5,
     seasonalEmployees: 3,
 
-    creditRating: "A",
-    paymentTerms: "NET_45",
+    creditRating: CreditRating.A,
+    paymentTerms: PaymentTerms.NET_45,
     creditLimit: 350000,
     paymentHistory: "Excellent - pays consistently after cattle sales",
     annualRevenueEstimate: 1200000,
@@ -627,20 +625,20 @@ const farmCustomersData = [
     equipmentNotes: "Hard use conditions, regular wear items needed",
 
     accountManager: "David Chen",
-    customerTier: "GOLD",
+    customerTier: CustomerTier.GOLD,
     annualPurchaseVolumeMin: 85000,
     annualPurchaseVolumeMax: 125000,
     lastContactDate: "2024-11-13",
-    lastContactMethod: "MOBILE",
+    lastContactMethod: PreferredContactMethod.MOBILE,
     lastContactNotes: "Parts order for baler repair",
     buyingPatterns: "Major purchases November-December, parts/repairs throughout year",
 
     growthPlans: "Expanding herd to 600 head, adding rotational grazing infrastructure",
-    technologyAdoption: "MEDIUM",
+    technologyAdoption: TechnologyAdoption.MEDIUM,
     certifications: ["Beef Quality Assurance (BQA)"],
     specialRequirements: "Equipment must handle rough terrain, reliable in remote conditions",
     competitorRelationships: "Uses multiple dealers for parts availability",
-    referralPotential: "HIGH",
+    referralPotential: ReferralPotential.HIGH,
     referralNotes: "Well-known in regional ranching community",
 
     deliveryStreet: "28450 Lazy River Road",
@@ -714,7 +712,7 @@ const farmCustomersData = [
     taxId: "39-7285614",
     yearsInOperation: 68,
     establishedYear: 1957,
-    ownershipStructure: "FAMILY_LLC",
+    ownershipStructure: OwnershipStructure.FAMILY_LLC,
     primaryContactName: "Daniel Krueger",
     primaryContactRole: "Managing Partner",
     primaryContactPhone: "(715) 384-6729",
@@ -734,10 +732,10 @@ const farmCustomersData = [
     officePhone: "(715) 384-6729",
     mobilePhone: "(715) 555-0401",
     email: "dan@cloverdaledairy.com",
-    preferredContactMethod: "EMAIL",
+    preferredContactMethod: PreferredContactMethod.EMAIL,
     preferredContactTimes: "Email during business hours, emergency mobile",
 
-    farmCategory: "LIVESTOCK",
+    farmCategory: FarmCategory.LIVESTOCK,
     totalAcreage: 950,
     ownedAcreage: 950,
     leasedAcreage: 0,
@@ -746,8 +744,8 @@ const farmCustomersData = [
     fullTimeEmployees: 8,
     seasonalEmployees: 2,
 
-    creditRating: "BBB",
-    paymentTerms: "NET_60",
+    creditRating: CreditRating.BBB,
+    paymentTerms: PaymentTerms.NET_60,
     creditLimit: 225000,
     paymentHistory: "Good - occasional extensions requested during low milk price periods",
     annualRevenueEstimate: 1100000,
@@ -762,20 +760,20 @@ const farmCustomersData = [
     equipmentNotes: "High hours on equipment, daily use conditions",
 
     accountManager: "Jennifer Martinez",
-    customerTier: "SILVER",
+    customerTier: CustomerTier.SILVER,
     annualPurchaseVolumeMin: 55000,
     annualPurchaseVolumeMax: 85000,
     lastContactDate: "2024-11-06",
-    lastContactMethod: "MOBILE",
+    lastContactMethod: PreferredContactMethod.MOBILE,
     lastContactNotes: "Service call for mixer wagon hydraulics",
     buyingPatterns: "Purchases when necessary, price-sensitive, considers used equipment",
 
     growthPlans: "Focus on efficiency over expansion, possible robotic milking system in 3-5 years",
-    technologyAdoption: "MEDIUM",
+    technologyAdoption: TechnologyAdoption.MEDIUM,
     certifications: ["FARM Certified", "Wisconsin DATCP Certified"],
     specialRequirements: "Equipment uptime critical for daily operations, flexible financing important",
     competitorRelationships: "Shops multiple dealers for best value",
-    referralPotential: "MEDIUM",
+    referralPotential: ReferralPotential.MEDIUM,
     referralNotes: "Active in dairy cooperative",
 
     deliveryStreet: "14825 Dairy Lane",
@@ -848,7 +846,7 @@ const farmCustomersData = [
     taxId: "43-8152936",
     yearsInOperation: 41,
     establishedYear: 1984,
-    ownershipStructure: "S_CORP",
+    ownershipStructure: OwnershipStructure.S_CORP,
     primaryContactName: "Raymond Cooper",
     primaryContactRole: "President",
     primaryContactPhone: "(573) 796-4423",
@@ -868,10 +866,10 @@ const farmCustomersData = [
     officePhone: "(573) 796-4423",
     mobilePhone: "(573) 555-0478",
     email: "ray@sunsethillslivestock.com",
-    preferredContactMethod: "MOBILE",
+    preferredContactMethod: PreferredContactMethod.MOBILE,
     preferredContactTimes: "Mobile call or text anytime",
 
-    farmCategory: "LIVESTOCK",
+    farmCategory: FarmCategory.LIVESTOCK,
     totalAcreage: 650,
     ownedAcreage: 500,
     leasedAcreage: 150,
@@ -880,8 +878,8 @@ const farmCustomersData = [
     fullTimeEmployees: 6,
     seasonalEmployees: 2,
 
-    creditRating: "A_MINUS",
-    paymentTerms: "NET_30",
+    creditRating: CreditRating.A_MINUS,
+    paymentTerms: PaymentTerms.NET_30,
     creditLimit: 280000,
     paymentHistory: "Excellent - consistent monthly livestock sale revenue",
     annualRevenueEstimate: 1800000,
@@ -896,20 +894,20 @@ const farmCustomersData = [
     equipmentNotes: "Well-maintained, focus on livestock handling efficiency",
 
     accountManager: "David Chen",
-    customerTier: "GOLD",
+    customerTier: CustomerTier.GOLD,
     annualPurchaseVolumeMin: 95000,
     annualPurchaseVolumeMax: 135000,
     lastContactDate: "2024-11-16",
-    lastContactMethod: "EMAIL",
+    lastContactMethod: PreferredContactMethod.EMAIL,
     lastContactNotes: "Quote request for replacement equipment",
     buyingPatterns: "Strategic purchases in winter, immediate needs as they arise",
 
     growthPlans: "Expanding hog finishing capacity by 400 head, modernizing facilities",
-    technologyAdoption: "MEDIUM_HIGH",
+    technologyAdoption: TechnologyAdoption.MEDIUM_HIGH,
     certifications: ["Pork Quality Assurance Plus (PQA+)"],
     specialRequirements: "Fast parts delivery during livestock emergencies",
     competitorRelationships: "Primary dealer relationship with company, occasional parts from others",
-    referralPotential: "HIGH",
+    referralPotential: ReferralPotential.HIGH,
     referralNotes: "Missouri Cattlemen's Association member, well-connected",
 
     deliveryStreet: "9870 State Route J",
@@ -983,7 +981,7 @@ const farmCustomersData = [
     taxId: "75-9263841",
     yearsInOperation: 33,
     establishedYear: 1992,
-    ownershipStructure: "LIMITED_PARTNERSHIP",
+    ownershipStructure: OwnershipStructure.LIMITED_PARTNERSHIP,
     primaryContactName: "Victoria Hayes",
     primaryContactRole: "General Partner",
     primaryContactPhone: "(830) 868-5531",
@@ -1003,10 +1001,10 @@ const farmCustomersData = [
     officePhone: "(830) 868-5531",
     mobilePhone: "(830) 555-0512",
     email: "victoria@heritagevalleyranch.com",
-    preferredContactMethod: "EMAIL",
+    preferredContactMethod: PreferredContactMethod.EMAIL,
     preferredContactTimes: "Email preferred, available for calls 6-8 PM",
 
-    farmCategory: "LIVESTOCK",
+    farmCategory: FarmCategory.LIVESTOCK,
     totalAcreage: 750,
     ownedAcreage: 750,
     leasedAcreage: 0,
@@ -1015,8 +1013,8 @@ const farmCustomersData = [
     fullTimeEmployees: 4,
     seasonalEmployees: 3,
 
-    creditRating: "A",
-    paymentTerms: "NET_30",
+    creditRating: CreditRating.A,
+    paymentTerms: PaymentTerms.NET_30,
     creditLimit: 200000,
     paymentHistory: "Excellent - regular payments from diverse revenue streams",
     annualRevenueEstimate: 1600000,
@@ -1031,20 +1029,20 @@ const farmCustomersData = [
     equipmentNotes: "Focus on sustainable ranching equipment",
 
     accountManager: "David Chen",
-    customerTier: "GOLD",
+    customerTier: CustomerTier.GOLD,
     annualPurchaseVolumeMin: 65000,
     annualPurchaseVolumeMax: 90000,
     lastContactDate: "2024-11-10",
-    lastContactMethod: "EMAIL",
+    lastContactMethod: PreferredContactMethod.EMAIL,
     lastContactNotes: "Agritourism discussion at customer event",
     buyingPatterns: "Thoughtful purchases aligned with sustainable ranching practices",
 
     growthPlans: "Expanding direct-to-consumer sales, adding on-farm processing facility",
-    technologyAdoption: "MEDIUM",
+    technologyAdoption: TechnologyAdoption.MEDIUM,
     certifications: ["American Grassfed Association", "Certified Humane"],
     specialRequirements: "Interested in sustainable/regenerative agriculture equipment",
     competitorRelationships: "Loyal to dealers who understand sustainable agriculture",
-    referralPotential: "VERY_HIGH",
+    referralPotential: ReferralPotential.VERY_HIGH,
     referralNotes: "Visible in sustainable ag community, strong social media presence",
 
     deliveryStreet: "16780 Ranch Road 2721",
@@ -1109,39 +1107,39 @@ const farmCustomersData = [
 // Function to seed the database
 export async function seedDatabase() {
   console.log('Starting database seed for Starfield Ag Equipment...');
-  
+
   for (const customerData of farmCustomersData) {
     try {
       console.log(`\n========================================`);
       console.log(`Creating customer: ${customerData.legalName}`);
       console.log(`========================================`);
-      
+
       // Extract related data
-      const { 
-        crops, 
-        livestock, 
-        productionMetrics, 
-        equipment, 
-        purchases, 
-        warranties, 
-        replacementCycles, 
-        tradeIns, 
-        insurance, 
-        contracts, 
+      const {
+        crops,
+        livestock,
+        productionMetrics,
+        equipment,
+        purchases,
+        warranties,
+        replacementCycles,
+        tradeIns,
+        insurance,
+        contracts,
         leases,
-        ...mainCustomerData 
+        ...mainCustomerData
       } = customerData;
-      
+
       // Create the main customer record
       console.log('  → Creating main customer record...');
       const customer = await handleApiCall(
         client.models.FarmCustomer.create(mainCustomerData),
         'Customer creation'
       );
-      
+
       const customerId = customer.id;
       console.log(`  ✓ Created customer with ID: ${customerId}`);
-      
+
       // Create related crops
       if (crops && crops.length > 0) {
         console.log(`  → Creating ${crops.length} crop records...`);
@@ -1156,7 +1154,7 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${crops.length} crop records`);
       }
-      
+
       // Create related livestock
       if (livestock && livestock.length > 0) {
         console.log(`  → Creating ${livestock.length} livestock records...`);
@@ -1171,7 +1169,7 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${livestock.length} livestock records`);
       }
-      
+
       // Create production metrics
       if (productionMetrics && productionMetrics.length > 0) {
         console.log(`  → Creating ${productionMetrics.length} production metric records...`);
@@ -1186,7 +1184,7 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${productionMetrics.length} production metric records`);
       }
-      
+
       // Create equipment records
       if (equipment && equipment.length > 0) {
         console.log(`  → Creating ${equipment.length} equipment records...`);
@@ -1201,7 +1199,7 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${equipment.length} equipment records`);
       }
-      
+
       // Create purchase records
       if (purchases && purchases.length > 0) {
         console.log(`  → Creating ${purchases.length} purchase records...`);
@@ -1216,7 +1214,7 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${purchases.length} purchase records`);
       }
-      
+
       // Create warranty records
       if (warranties && warranties.length > 0) {
         console.log(`  → Creating ${warranties.length} warranty records...`);
@@ -1231,7 +1229,7 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${warranties.length} warranty records`);
       }
-      
+
       // Create replacement cycle records
       if (replacementCycles && replacementCycles.length > 0) {
         console.log(`  → Creating ${replacementCycles.length} replacement cycle records...`);
@@ -1246,7 +1244,7 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${replacementCycles.length} replacement cycle records`);
       }
-      
+
       // Create trade-in records
       if (tradeIns && tradeIns.length > 0) {
         console.log(`  → Creating ${tradeIns.length} trade-in records...`);
@@ -1261,7 +1259,7 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${tradeIns.length} trade-in records`);
       }
-      
+
       // Create insurance records
       if (insurance && insurance.length > 0) {
         console.log(`  → Creating ${insurance.length} insurance records...`);
@@ -1276,7 +1274,7 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${insurance.length} insurance records`);
       }
-      
+
       // Create contract records
       if (contracts && contracts.length > 0) {
         console.log(`  → Creating ${contracts.length} contract records...`);
@@ -1291,7 +1289,7 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${contracts.length} contract records`);
       }
-      
+
       // Create lease records
       if (leases && leases.length > 0) {
         console.log(`  → Creating ${leases.length} lease records...`);
@@ -1306,16 +1304,16 @@ export async function seedDatabase() {
         }
         console.log(`  ✓ Created ${leases.length} lease records`);
       }
-      
+
       console.log(`\n✓✓✓ Successfully created all records for ${customerData.legalName} ✓✓✓\n`);
-      
+
     } catch (error) {
       console.error(`\n✗✗✗ Error creating customer ${customerData.legalName}:`, error);
       console.error('Stopping seed process due to error.\n');
       throw error;
     }
   }
-  
+
   console.log('\n========================================');
   console.log('Database seed completed successfully!');
   console.log(`Total customers created: ${farmCustomersData.length}`);
@@ -1325,24 +1323,24 @@ export async function seedDatabase() {
 // Query function to verify data was created
 export async function verifySeededData() {
   console.log('\nVerifying seeded data...\n');
-  
+
   try {
     const { data: customers, errors } = await client.models.FarmCustomer.list();
-    
+
     if (errors) {
       console.error('Error fetching customers:', errors);
       return;
     }
-    
+
     console.log(`✓ Found ${customers?.length || 0} customers in database`);
-    
+
     if (customers && customers.length > 0) {
       console.log('\nCustomers:');
       for (const customer of customers) {
         console.log(`  - ${customer.legalName} (${customer.farmCategory})`);
       }
     }
-    
+
   } catch (error) {
     console.error('Error verifying data:', error);
   }
@@ -1352,10 +1350,10 @@ export async function verifySeededData() {
 export async function runSeedScript() {
   try {
     console.log('🌾 Starfield Ag Equipment - Database Seed Script 🌾\n');
-    
+
     await seedDatabase();
     await verifySeededData();
-    
+
     console.log('\n✅ Seed script completed successfully!\n');
   } catch (error) {
     console.error('\n❌ Seed script failed:', error);

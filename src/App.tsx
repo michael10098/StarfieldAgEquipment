@@ -18,7 +18,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    let subscription: ReturnType<typeof client.models.FarmCustomer.observeQuery> | undefined;
+    let subscription: { unsubscribe: () => void } | undefined;
 
     try {
       subscription = client.models.FarmCustomer.observeQuery().subscribe({
@@ -44,15 +44,13 @@ function App() {
     }
 
     return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
+      subscription?.unsubscribe();
     };
   }, []);
 
   async function createFarmCustomer(e: React.FormEvent) {
     e.preventDefault();
-    
+
     if (!newCustomerName.trim()) return;
 
     setIsCreating(true);
@@ -60,7 +58,39 @@ function App() {
 
     try {
       await client.models.FarmCustomer.create({
-        legalName: newCustomerName.trim()
+        legalName: newCustomerName.trim(),
+        taxId: "",
+        yearsInOperation: 0,
+        establishedYear: 0,
+        primaryContactName: "",
+        primaryContactRole: "",
+        primaryContactEmail: "",
+        physicalStreet: "",
+        physicalCity: "",
+        physicalState: "",
+        physicalZipCode: "",
+        email: "",
+        totalAcreage: 0,
+        ownedAcreage: 0,
+        leasedAcreage: 0,
+        seasonalSchedule: "",
+        fullTimeEmployees: 0,
+        seasonalEmployees: 0,
+        creditLimit: 0,
+        paymentHistory: "",
+        annualRevenueEstimate: 0,
+        bankName: "",
+        annualMaintenanceSchedule: false,
+        averageServiceCallsPerYear: 0,
+        accountManager: "",
+        annualPurchaseVolumeMin: 0,
+        annualPurchaseVolumeMax: 0,
+        buyingPatterns: "",
+        siteAccess: "",
+        preferredDeliveryWindows: "",
+        storageCapacity: "",
+        newsletterSubscribed: false,
+        referralSource: ""
       });
       setNewCustomerName("");
     } catch (err) {
@@ -112,9 +142,9 @@ function App() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h1>Farm Customers</h1>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-          <div style={{ 
-            padding: "0.5rem", 
-            borderRadius: "4px", 
+          <div style={{
+            padding: "0.5rem",
+            borderRadius: "4px",
             backgroundColor: isConnected ? "#d4edda" : "#f8d7da",
             color: isConnected ? "#155724" : "#721c24"
           }}>
@@ -127,10 +157,10 @@ function App() {
       {/* Seed Database Button */}
       <div style={{ marginTop: "1rem", padding: "1rem", backgroundColor: "#fff3cd", borderRadius: "4px" }}>
         <p style={{ marginBottom: "0.5rem", fontWeight: "bold" }}>Seed Database with Sample Data</p>
-        <button 
-          onClick={seedDatabase} 
+        <button
+          onClick={seedDatabase}
           disabled={isSeeding || !isConnected}
-          style={{ 
+          style={{
             padding: "0.5rem 1rem",
             backgroundColor: "#ffc107",
             border: "none",
@@ -172,20 +202,20 @@ function App() {
           </li>
         ) : (
           farmCustomers.map((farmCustomer) => (
-            <li 
-              key={farmCustomer.id} 
-              style={{ 
-                display: "flex", 
-                justifyContent: "space-between", 
+            <li
+              key={farmCustomer.id}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
                 alignItems: "center",
-                padding: "1rem", 
-                marginBottom: "0.5rem", 
+                padding: "1rem",
+                marginBottom: "0.5rem",
                 border: "1px solid #ddd",
                 borderRadius: "4px"
               }}
             >
               <span>{farmCustomer.legalName}</span>
-              <button 
+              <button
                 onClick={() => deleteFarmCustomer(farmCustomer.id)}
                 style={{ color: "red" }}
                 disabled={!isConnected}
