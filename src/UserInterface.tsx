@@ -1,5 +1,5 @@
 import { memo, useState, useCallback, useMemo } from "react";
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box, Button, IconButton, Tooltip } from '@mui/material';
 import ItemGrid from "./ItemGrid";
 import Sidebar from "./Sidebar";
 import FarmCustomerTile from "./FarmCustomerTile";
@@ -35,6 +35,8 @@ function UserInterface() {
     allFarmCustomers,
     activeFarmCustomer,
     setActiveFarmCustomer,
+    loadCrops,
+    crops,
     isLoading,
   } = useDataStore();
 
@@ -134,6 +136,13 @@ function UserInterface() {
             </ItemGrid>
           </Box>
         </Box>
+
+        {/* Test Button */}
+        <Button
+          onClick={loadCrops}
+        >
+          Test {crops.length}
+        </Button>
 
         {/* Sidebar */}
         <Sidebar
