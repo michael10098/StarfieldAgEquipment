@@ -110,17 +110,29 @@ function UserInterface() {
           </Tooltip>
 
           {/* Item Grid */}
-          <ItemGrid>
-            {filteredFarmCustomers?.map((farmCustomer) => (
-              <FarmCustomerTileMemo
-                key={farmCustomer.id}
-                farmCustomer={farmCustomer}
-                isHighlighted={activeFarmCustomer?.id === farmCustomer.id}
-                disabled={disabled}
-                onClick={() => activateSidebar(farmCustomer)}
-              />
-            ))}
-          </ItemGrid>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '8vh',        // Fixed distance from top
+              left: '0.5vw',       // Fixed distance from left
+              right: isSidebarOpen ? '40%' : '0.5vw', // Adjust based on sidebar width
+              width: 'auto',
+              height: 'auto',
+              transition: 'right 0.3s ease', // Smooth transition when sidebar opens/closes
+            }}
+          >
+            <ItemGrid>
+              {filteredFarmCustomers?.map((farmCustomer) => (
+                <FarmCustomerTileMemo
+                  key={farmCustomer.id}
+                  farmCustomer={farmCustomer}
+                  isHighlighted={activeFarmCustomer?.id === farmCustomer.id}
+                  disabled={disabled}
+                  onClick={() => activateSidebar(farmCustomer)}
+                />
+              ))}
+            </ItemGrid>
+          </Box>
         </Box>
 
         {/* Sidebar */}
