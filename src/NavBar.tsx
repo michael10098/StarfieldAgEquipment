@@ -42,8 +42,8 @@ export default function NavBar({
                         height: '100%',
                         width: 'auto',
                     }}
-                    src="../public/logo.svg"
-                    alt="Starfiel AG"
+                    src="/logo.svg"
+                    alt="Starfied AG"
                 />
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography

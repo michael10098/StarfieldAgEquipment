@@ -31,6 +31,7 @@ function UserInterface() {
   const navBarHeight: number = 16;
 
   const {
+    loadAllFarmCustomers,
     allFarmCustomers,
     activeFarmCustomer,
     setActiveFarmCustomer,
@@ -127,6 +128,7 @@ function UserInterface() {
           isOpen={isSidebarOpen}
           onClose={handleCloseSidebar}
           onEdit={handleEditSidebar}
+          onRefresh={loadAllFarmCustomers}
           positionFromTop={navBarHeight}
         >
         </Sidebar>

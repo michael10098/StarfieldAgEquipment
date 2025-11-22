@@ -7,6 +7,7 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
   onEdit?: (edit: boolean) => void;
+  onRefresh?: () => Promise<void>;
   positionFromTop: number;
 }
 
@@ -30,6 +31,13 @@ function Sidebar({
   const handleClose = useCallback(() => {
     onClose();
   }, [onClose]);
+
+  // You can call onRefresh after save/delete operations like this:
+  // const handleSave = async () => {
+  //   await client.models.FarmCustomer.create({...});
+  //   await onRefresh?.();
+  //   handleClose();
+  // };
 
   return (
     <Drawer

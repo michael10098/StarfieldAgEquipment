@@ -61,7 +61,7 @@ export function FarmCustomerTile({
                                 letterSpacing: 0.5,
                             }}
                         >
-                            {farmCustomer.legalName}
+                            {farmCustomer.dba}
                         </Typography>
                     </Box>
 
@@ -102,7 +102,7 @@ export function FarmCustomerTile({
                                 color: 'text.secondary',
                             }}
                         >
-                            {farmCustomer.legalName}
+                            {farmCustomer.accountManager}
                         </Typography>
                     </Box>
                 </Box>

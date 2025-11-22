@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useMemo, useCallback } from 'react';
 import { FarmCustomer } from './Types';
 import { generateClient } from 'aws-amplify/api';
 import { Schema } from '../amplify/data/resource';
@@ -16,6 +16,9 @@ interface DataStoreState {
   loadingStates: {
     farmCustomers: boolean;
   };
+
+  // Refresh function
+  loadAllFarmCustomers: () => Promise<void>;
 }
 
 const DataStoreContext = createContext<DataStoreState | undefined>(undefined);
@@ -32,9 +35,10 @@ interface DataStoreProviderProps {
   children: ReactNode;
 }
 
-export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
+// Create client outside component - it only needs to be created once
+const client = generateClient<Schema>();
 
-  const client = generateClient<Schema>();
+export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
 
   // Data state
   const [allFarmCustomers, setAllFarmCustomers] = useState<FarmCustomer[]>([]);
@@ -53,6 +57,22 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
     [loadingStates]
   );
 
+  // Load function - no dependencies, client is stable
+  const loadAllFarmCustomers = useCallback(async () => {
+    setLoadingStates((prev) => ({ ...prev, farmCustomers: true }));
+    try {
+      const result = await client.models.FarmCustomer.list();
+      const farmCustomers = result.data
+        .filter((item) => item !== null && item !== undefined)
+        .sort((a, b) => a.legalName.localeCompare(b.legalName));
+      setAllFarmCustomers(farmCustomers);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, farmCustomers: false }));
+    }
+  }, []); // Empty dependency array - client is stable
+
   // Keep activeFarmCustomer in sync with allFarmCustomers
   useEffect(() => {
     if (activeFarmCustomer) {
@@ -62,7 +82,7 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
       );
 
       if (updatedFarmCustomer) {
-        // Update to the latest version from the subscription
+        // Update to the latest version
         setActiveFarmCustomer(updatedFarmCustomer);
       } else {
         // The FarmCustomer was deleted, clear the selection
@@ -71,30 +91,14 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
     }
   }, [allFarmCustomers, activeFarmCustomer]);
 
-  // Combined subscription effect for all data
+  // Load data on mount - only runs once
   useEffect(() => {
-    // Subscribe to FarmCustomer
-    const farmCustomerSubscription = client.models.FarmCustomer.observeQuery().subscribe({
-      next: (data) => {
-        const farmCustomers = data.items
-          .filter(
-            (item) =>
-              item !== null && item !== undefined
-          )
-          .sort((a, b) => a.legalName.localeCompare(b.legalName));
-        setAllFarmCustomers(farmCustomers);
-        setLoadingStates((prev) => ({ ...prev, farmCustomers: false }));
-      },
-    });
-
-    // Cleanup all subscriptions
-    return () => {
-      farmCustomerSubscription.unsubscribe();
-    };
-  }, []);
+    loadAllFarmCustomers();
+  }, [loadAllFarmCustomers]);
 
   const value = useMemo(
     () => ({
+      loadAllFarmCustomers,
       allFarmCustomers,
       activeFarmCustomer,
       setActiveFarmCustomer,
@@ -102,6 +106,7 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
       loadingStates,
     }),
     [
+      loadAllFarmCustomers,
       allFarmCustomers,
       activeFarmCustomer,
       setActiveFarmCustomer,
