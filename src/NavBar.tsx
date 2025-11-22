@@ -33,6 +33,7 @@ export default function NavBar({
                     px: 2,
                     height: `${navHeight * 4}px`,
                     minHeight: `${navHeight * 4}px`,
+                    userSelect: 'none',
                 }}
             >
                 {/* Left */}
@@ -41,9 +42,10 @@ export default function NavBar({
                     sx={{
                         height: '100%',
                         width: 'auto',
+                        userSelect: 'none',
                     }}
                     src="/logo.svg"
-                    alt="Starfied AG"
+                    alt="Starfield AG"
                 />
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography

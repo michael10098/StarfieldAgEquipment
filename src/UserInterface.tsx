@@ -113,9 +113,9 @@ function UserInterface() {
           <Box
             sx={{
               position: 'absolute',
-              top: '8vh',        // Fixed distance from top
-              left: '0.5vw',       // Fixed distance from left
-              right: isSidebarOpen ? '40%' : '0.5vw', // Adjust based on sidebar width
+              top: 75,        // Fixed distance from top
+              left: 0,       // Fixed distance from left
+              right: isSidebarOpen ? '40%' : 0, // Adjust based on sidebar width
               width: 'auto',
               height: 'auto',
               transition: 'right 0.3s ease', // Smooth transition when sidebar opens/closes
