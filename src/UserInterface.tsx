@@ -1,5 +1,5 @@
 import { memo, useState, useCallback, useMemo } from "react";
-import { Box, Button, IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import ItemGrid from "./ItemGrid";
 import Sidebar from "./Sidebar";
 import FarmCustomerTile from "./FarmCustomerTile";
@@ -35,9 +35,6 @@ function UserInterface() {
     allFarmCustomers,
     activeFarmCustomer,
     setActiveFarmCustomer,
-    loadCrops,
-    crops,
-    isLoading,
   } = useDataStore();
 
   // UI state
@@ -63,9 +60,9 @@ function UserInterface() {
 
   // Memoized filtered data (if you need filtering logic, add it here)
   const filteredFarmCustomers = useMemo(() => {
-    if (isLoading || !allFarmCustomers.length) return [];
+    if (!allFarmCustomers.length) return [];
     return allFarmCustomers;
-  }, [isLoading, allFarmCustomers]);
+  }, [allFarmCustomers]);
 
   return (
     <>
@@ -136,13 +133,6 @@ function UserInterface() {
             </ItemGrid>
           </Box>
         </Box>
-
-        {/* Test Button */}
-        <Button
-          onClick={loadCrops}
-        >
-          Test {crops.length}
-        </Button>
 
         {/* Sidebar */}
         <Sidebar

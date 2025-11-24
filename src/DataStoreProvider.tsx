@@ -6,22 +6,22 @@ import { Schema } from '../amplify/data/resource';
 interface DataStoreState {
   // Data
   allFarmCustomers: FarmCustomer[];
-  crops: Crop[];
 
   // Active selection
   activeFarmCustomer: FarmCustomer | undefined;
   setActiveFarmCustomer: (farmCustomer: FarmCustomer | undefined) => void;
+  activeCrops: Crop[] | undefined;
 
   // Loading states
   isLoading: boolean;
   loadingStates: {
-    farmCustomers: boolean;
-    crops: boolean;
+    loadingFarmCustomers: boolean;
+    loadingActiveCrops: boolean;
   };
 
   // Refresh function
   loadAllFarmCustomers: () => Promise<void>;
-  loadCrops: () => Promise<void>;
+  loadActiveCrops: () => Promise<void>;
 }
 
 const DataStoreContext = createContext<DataStoreState | undefined>(undefined);
@@ -45,15 +45,15 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
 
   // Data state
   const [allFarmCustomers, setAllFarmCustomers] = useState<FarmCustomer[]>([]);
-  const [crops, setCrops] = useState<Crop[]>([]);
 
   // Active selection state
   const [activeFarmCustomer, setActiveFarmCustomer] = useState<FarmCustomer | undefined>(undefined);
+  const [activeCrops, setActiveCrops] = useState<Crop[] | undefined>(undefined);
 
   // Loading state
   const [loadingStates, setLoadingStates] = useState({
-    farmCustomers: false,
-    crops: false,
+    loadingFarmCustomers: false,
+    loadingActiveCrops: false,
   });
 
   // Compute overall loading state
@@ -64,7 +64,7 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
 
   // Load function - no dependencies, client is stable
   const loadAllFarmCustomers = useCallback(async () => {
-    setLoadingStates((prev) => ({ ...prev, farmCustomers: true }));
+    setLoadingStates((prev) => ({ ...prev, loadingFarmCustomers: true }));
     try {
       const result = await client.models.FarmCustomer.list();
       const farmCustomers = result.data
@@ -74,7 +74,7 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
-      setLoadingStates((prev) => ({ ...prev, farmCustomers: false }));
+      setLoadingStates((prev) => ({ ...prev, loadingFarmCustomers: false }));
     }
   }, []); // Empty dependency array - client is stable
 
@@ -93,6 +93,8 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
         // The FarmCustomer was deleted, clear the selection
         setActiveFarmCustomer(undefined);
       }
+      // set the active crops to undefined since the activeFarmCustomer has changed
+      setActiveCrops(undefined);
     }
   }, [allFarmCustomers, activeFarmCustomer]);
 
@@ -101,20 +103,28 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
     loadAllFarmCustomers();
   }, [loadAllFarmCustomers]);
 
-  const loadCrops = useCallback(async () => {
-    setLoadingStates((prev) => ({ ...prev, crops: true }));
-    try {
-      const result = await client.models.Crop.list();
-      const crops = result.data
-        .filter((item) => item !== null && item !== undefined)
-        .sort((a, b) => a.acreage - b.acreage);
-      setCrops(crops);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, crops: false }));
+  const loadActiveCrops = useCallback(async () => {
+    if (activeFarmCustomer) {
+      setLoadingStates((prev) => ({ ...prev, loadingActiveCrops: true }));
+      try {
+        const result = await client.models.Crop.list({
+          filter: {
+            farmCustomerId: {
+              eq: activeFarmCustomer.id
+            }
+          }
+        });
+        const activeCrops = result.data
+          .filter((item) => item !== null && item !== undefined)
+          .sort((a, b) => a.acreage - b.acreage);
+        setActiveCrops(activeCrops);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoadingStates((prev) => ({ ...prev, loadingActiveCrops: false }));
+      }
     }
-  }, []); // Empty dependency array - client is stable
+  }, [activeFarmCustomer]); // Empty dependency array - client is stable
 
   const value = useMemo(
     () => ({
@@ -122,8 +132,8 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
       allFarmCustomers,
       activeFarmCustomer,
       setActiveFarmCustomer,
-      loadCrops,
-      crops,
+      loadActiveCrops,
+      activeCrops,
       isLoading,
       loadingStates,
     }),
@@ -132,8 +142,8 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
       allFarmCustomers,
       activeFarmCustomer,
       setActiveFarmCustomer,
-      loadCrops,
-      crops,
+      loadActiveCrops,
+      activeCrops,
       isLoading,
       loadingStates,
     ]
