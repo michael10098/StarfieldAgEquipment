@@ -1,5 +1,8 @@
 import { Card, CardContent, Box, Typography } from '@mui/material';
-import { FarmCustomer } from './Types';
+import { Tables } from './supabase.types';
+
+// Types from your database
+type FarmCustomer = Tables<'farm_customer'>;
 
 export function FarmCustomerTile({
     farmCustomer,
@@ -84,7 +87,7 @@ export function FarmCustomerTile({
                                 wordBreak: 'break-word',
                             }}
                         >
-                            {farmCustomer.legalName}
+                            {farmCustomer.legal_name}
                         </Typography>
                     </Box>
 
@@ -102,7 +105,7 @@ export function FarmCustomerTile({
                                 color: 'text.secondary',
                             }}
                         >
-                            {farmCustomer.accountManager}
+                            {farmCustomer.account_manager}
                         </Typography>
                     </Box>
                 </Box>

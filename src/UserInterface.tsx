@@ -4,9 +4,12 @@ import ItemGrid from "./ItemGrid";
 import Sidebar from "./Sidebar";
 import FarmCustomerTile from "./FarmCustomerTile";
 import NavBar from "./NavBar";
-import { FarmCustomer } from "./Types"
 import { useDataStore } from "./DataStoreProvider";
 import Add from '@mui/icons-material/Add';
+import { Tables } from './supabase.types';
+
+// Types from your database
+type FarmCustomer = Tables<'farm_customer'>;
 
 // Memoized tile component for better performance
 const FarmCustomerTileMemo = memo<{
