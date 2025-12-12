@@ -1,0 +1,391 @@
+# Datasette Setup Guide for Fit PC2 (x32 Atom)
+
+Complete guide to setting up Datasette to serve your SQLite farm customer database on a Fit PC2.
+
+## Prerequisites
+
+- Fit PC2 running Linux (Debian/Ubuntu recommended)
+- Python 3.6 or higher
+- SSH access to the Fit PC2
+- Your `your_database.db` SQLite file
+
+## Step 1: Prepare the System
+
+```bash
+# Update system
+sudo apt-get update
+
+# Install Python 3 and pip (if not already installed)
+sudo apt-get install python3 python3-pip -y
+
+# Verify installation
+python3 --version
+pip3 --version
+```
+
+## Step 2: Create Virtual Environment and Install Datasette
+
+```bash
+# Install python3-venv if not already installed
+sudo apt-get install python3-venv -y
+
+# Create virtual environment
+python3 -m venv ~/farmdata-env
+
+# Activate virtual environment
+source ~/farmdata-env/bin/activate
+
+# Install Datasette
+pip install datasette
+
+# Verify installation
+datasette --version
+
+# Optional: Install useful plugins
+pip install datasette-cluster-map  # Map visualization
+pip install datasette-vega          # Charts
+pip install datasette-json-html     # Better JSON display
+
+# Deactivate when done (but keep it activated for next steps)
+# deactivate
+```
+
+## Step 3: Set Up Your Database Directory
+
+```bash
+# Create a directory for your database
+mkdir -p ~/farmdata
+cd ~/farmdata
+
+# Copy your database file here
+# (Use scp from your local machine or move from wherever it is)
+# scp your_database.db user@fitpc-ip:~/farmdata/
+
+# Set proper permissions
+chmod 644 your_database.db
+```
+
+## Step 4: Test Datasette
+
+```bash
+# Make sure virtual environment is activated
+source ~/farmdata-env/bin/activate
+
+# Run Datasette (test mode)
+datasette your_database.db --host 0.0.0.0 --port 8001
+
+# Open in browser: http://your-fitpc-ip:8001
+# Press Ctrl+C to stop when done testing
+```
+
+## Step 5: Configure Datasette Settings (Optional)
+
+Create a `metadata.json` file for better display:
+
+```bash
+nano ~/farmdata/metadata.json
+```
+
+Add this content:
+
+```json
+{
+  "title": "Starfield Ag Equipment - Farm Customer Database",
+  "description": "Farm customer management system with equipment, crops, and livestock data",
+  "databases": {
+    "your_database": {
+      "title": "Farm Customers",
+      "tables": {
+        "farm_customer": {
+          "title": "Farm Customers",
+          "description": "Complete customer information",
+          "label_column": "legal_name"
+        },
+        "crop": {
+          "title": "Crops",
+          "label_column": "crop_type"
+        },
+        "livestock": {
+          "title": "Livestock",
+          "label_column": "livestock_type"
+        },
+        "equipment_item": {
+          "title": "Equipment",
+          "label_column": "equipment_type"
+        }
+      }
+    }
+  }
+}
+```
+
+Save (Ctrl+O, Enter, Ctrl+X)
+
+## Step 6: Create Systemd Service
+
+Create a systemd service file:
+
+```bash
+sudo nano /etc/systemd/system/datasette.service
+```
+
+Add this content:
+
+```ini
+[Unit]
+Description=Datasette SQLite Server for Farm Database
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_USERNAME
+WorkingDirectory=/home/YOUR_USERNAME/farmdata
+ExecStart=/home/YOUR_USERNAME/farmdata-env/bin/datasette your_database.db --host 0.0.0.0 --port 8001 --metadata metadata.json
+Restart=always
+RestartSec=10
+
+# Resource limits (good for low-power systems)
+MemoryLimit=256M
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target
+```
+
+**Important:** Replace `YOUR_USERNAME` with your actual username.
+
+**Note:** The ExecStart path now points to the virtual environment's datasette binary at `/home/YOUR_USERNAME/farmdata-env/bin/datasette`
+
+Save the file (Ctrl+O, Enter, Ctrl+X)
+
+## Step 7: Enable and Start the Service
+
+```bash
+# Reload systemd
+sudo systemctl daemon-reload
+
+# Enable service to start on boot
+sudo systemctl enable datasette
+
+# Start the service
+sudo systemctl start datasette
+
+# Check status
+sudo systemctl status datasette
+```
+
+## Step 8: Verify It's Running
+
+```bash
+# Check if service is running
+sudo systemctl status datasette
+
+# Check if port is listening
+sudo netstat -tlnp | grep 8001
+
+# Or use curl
+curl http://localhost:8001
+```
+
+Open browser: `http://your-fitpc-ip:8001`
+
+## API Usage Examples
+
+Once running, you can access your data via JSON API:
+
+### Get All Farm Customers
+```bash
+curl http://your-fitpc-ip:8001/your_database/farm_customer.json
+```
+
+### Get Specific Farm Customer
+```bash
+curl http://your-fitpc-ip:8001/your_database/farm_customer/1.json
+```
+
+### Custom SQL Query
+```bash
+curl "http://your-fitpc-ip:8001/your_database.json?sql=SELECT+*+FROM+farm_customer+WHERE+customer_tier='GOLD'"
+```
+
+### Get Crops for a Specific Farm
+```bash
+curl "http://your-fitpc-ip:8001/your_database.json?sql=SELECT+*+FROM+crop+WHERE+farm_customer_id=1"
+```
+
+### Get Farm with Related Data (JOIN)
+```bash
+curl "http://your-fitpc-ip:8001/your_database.json?sql=SELECT+f.*,+c.crop_type,+c.acreage+FROM+farm_customer+f+LEFT+JOIN+crop+c+ON+f.id=c.farm_customer_id+WHERE+f.id=1"
+```
+
+## Management Commands
+
+```bash
+# Stop service
+sudo systemctl stop datasette
+
+# Start service
+sudo systemctl start datasette
+
+# Restart service
+sudo systemctl restart datasette
+
+# View logs
+sudo journalctl -u datasette -f
+
+# View last 50 log lines
+sudo journalctl -u datasette -n 50
+
+# Disable service (won't start on boot)
+sudo systemctl disable datasette
+```
+
+## Performance Tuning for Fit PC2
+
+Edit the service file to optimize for low-power hardware:
+
+```bash
+sudo nano /etc/systemd/system/datasette.service
+```
+
+Add these options to the `ExecStart` line:
+
+```ini
+ExecStart=/home/YOUR_USERNAME/farmdata-env/bin/datasette your_database.db \
+  --host 0.0.0.0 \
+  --port 8001 \
+  --metadata metadata.json \
+  --config max_returned_rows:100 \
+  --config sql_time_limit_ms:5000 \
+  --config facet_time_limit_ms:1000
+```
+
+Then reload:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart datasette
+```
+
+## Firewall Configuration (If Applicable)
+
+```bash
+# Allow port 8001
+sudo ufw allow 8001/tcp
+
+# Or for specific IP only
+sudo ufw allow from 192.168.1.0/24 to any port 8001
+```
+
+## Backup Strategy
+
+```bash
+# Create backup script
+nano ~/backup-database.sh
+```
+
+Add:
+```bash
+#!/bin/bash
+BACKUP_DIR=~/farmdata/backups
+mkdir -p $BACKUP_DIR
+DATE=$(date +%Y%m%d_%H%M%S)
+cp ~/farmdata/your_database.db $BACKUP_DIR/your_database_$DATE.db
+# Keep only last 7 backups
+ls -t $BACKUP_DIR/your_database_*.db | tail -n +8 | xargs rm -f
+```
+
+Make executable:
+```bash
+chmod +x ~/backup-database.sh
+```
+
+Add to crontab (daily backup at 2 AM):
+```bash
+crontab -e
+```
+
+Add line:
+```
+0 2 * * * /home/YOUR_USERNAME/backup-database.sh
+```
+
+## Accessing from Other Machines
+
+### On Your Local Network
+```
+http://fitpc-ip:8001
+```
+
+### Access Remotely (SSH Tunnel - Secure)
+From your local machine:
+```bash
+ssh -L 8001:localhost:8001 user@fitpc-ip
+```
+
+Then access: `http://localhost:8001`
+
+## Troubleshooting
+
+### Service won't start
+```bash
+# Check logs
+sudo journalctl -u datasette -n 50 --no-pager
+
+# Verify datasette path in virtual environment
+ls ~/farmdata-env/bin/datasette
+
+# Test manually with virtual environment
+source ~/farmdata-env/bin/activate
+cd ~/farmdata
+datasette your_database.db --host 0.0.0.0 --port 8001
+```
+
+### Port already in use
+```bash
+# Find what's using port 8001
+sudo lsof -i :8001
+
+# Kill the process if needed
+sudo kill <PID>
+```
+
+### Permission denied
+```bash
+# Fix database permissions
+chmod 644 ~/farmdata/your_database.db
+chown $USER:$USER ~/farmdata/your_database.db
+
+# Fix directory permissions
+chmod 755 ~/farmdata
+```
+
+### High memory usage
+Edit service file and lower memory limit:
+```ini
+MemoryLimit=128M
+```
+
+## Useful Datasette URLs
+
+- **Home:** `http://fitpc-ip:8001`
+- **Database:** `http://fitpc-ip:8001/your_database`
+- **Table:** `http://fitpc-ip:8001/your_database/farm_customer`
+- **JSON API:** `http://fitpc-ip:8001/your_database/farm_customer.json`
+- **Custom Query:** `http://fitpc-ip:8001/your_database?sql=YOUR_SQL_HERE`
+
+## Next Steps
+
+1. Consider setting up HTTPS with Let's Encrypt (if exposing to internet)
+2. Add authentication if needed (datasette plugins available)
+3. Create custom SQL views for common queries
+4. Set up monitoring (datasette has built-in metrics)
+
+## Resources
+
+- **Datasette Documentation:** https://docs.datasette.io
+- **Datasette Plugins:** https://datasette.io/plugins
+- **SQL Reference:** https://www.sqlite.org/lang.html
+
+---
+
+Your farm customer database is now served as a lightweight API perfect for your Fit PC2!
