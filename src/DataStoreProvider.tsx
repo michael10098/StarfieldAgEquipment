@@ -1,7 +1,10 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useMemo, useCallback } from 'react';
-import { FarmCustomer, Crop } from './Types';
-import { generateClient } from 'aws-amplify/api';
-import { Schema } from '../amplify/data/resource';
+import { createClient } from '@supabase/supabase-js';
+import { Database, Tables } from './supabase.types';
+
+// Types from your database
+type FarmCustomer = Tables<'farm_customer'>;
+type Crop = Tables<'crop'>;
 
 interface DataStoreState {
   // Data
@@ -38,8 +41,11 @@ interface DataStoreProviderProps {
   children: ReactNode;
 }
 
-// Create client outside component - it only needs to be created once
-const client = generateClient<Schema>();
+// Create Supabase client outside component - it only needs to be created once
+// Replace these with your actual Supabase URL and anon key
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
 
@@ -62,21 +68,26 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
     [loadingStates]
   );
 
-  // Load function - no dependencies, client is stable
+  // Load function - no dependencies, supabase client is stable
   const loadAllFarmCustomers = useCallback(async () => {
     setLoadingStates((prev) => ({ ...prev, loadingFarmCustomers: true }));
     try {
-      const result = await client.models.FarmCustomer.list();
-      const farmCustomers = result.data
-        .filter((item) => item !== null && item !== undefined)
-        .sort((a, b) => a.legalName.localeCompare(b.legalName));
-      setAllFarmCustomers(farmCustomers);
+      const { data, error } = await supabase
+        .from('farm_customer')
+        .select('*')
+        .order('legal_name', { ascending: true });
+
+      if (error) {
+        throw error;
+      }
+
+      setAllFarmCustomers(data || []);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoadingStates((prev) => ({ ...prev, loadingFarmCustomers: false }));
     }
-  }, []); // Empty dependency array - client is stable
+  }, []); // Empty dependency array - supabase client is stable
 
   // Keep activeFarmCustomer in sync with allFarmCustomers
   useEffect(() => {
@@ -107,24 +118,24 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
     if (activeFarmCustomer) {
       setLoadingStates((prev) => ({ ...prev, loadingActiveCrops: true }));
       try {
-        const result = await client.models.Crop.list({
-          filter: {
-            farmCustomerId: {
-              eq: activeFarmCustomer.id
-            }
-          }
-        });
-        const activeCrops = result.data
-          .filter((item) => item !== null && item !== undefined)
-          .sort((a, b) => a.acreage - b.acreage);
-        setActiveCrops(activeCrops);
+        const { data, error } = await supabase
+          .from('crop')
+          .select('*')
+          .eq('farm_customer_id', activeFarmCustomer.id)
+          .order('acreage', { ascending: true });
+
+        if (error) {
+          throw error;
+        }
+
+        setActiveCrops(data || []);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setLoadingStates((prev) => ({ ...prev, loadingActiveCrops: false }));
       }
     }
-  }, [activeFarmCustomer]); // Empty dependency array - client is stable
+  }, [activeFarmCustomer]); // Dependency on activeFarmCustomer
 
   const value = useMemo(
     () => ({
@@ -141,7 +152,6 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
       loadAllFarmCustomers,
       allFarmCustomers,
       activeFarmCustomer,
-      setActiveFarmCustomer,
       loadActiveCrops,
       activeCrops,
       isLoading,
