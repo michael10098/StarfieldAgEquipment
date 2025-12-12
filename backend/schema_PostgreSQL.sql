@@ -1,7 +1,5 @@
-PRAGMA foreign_keys = ON;
-
 CREATE TABLE IF NOT EXISTS farm_customer (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id SERIAL PRIMARY KEY,
   legal_name TEXT NOT NULL,
   dba TEXT,
   tax_number TEXT NOT NULL,
@@ -42,22 +40,22 @@ CREATE TABLE IF NOT EXISTS farm_customer (
   seasonal_employees INTEGER NOT NULL,
   credit_rating TEXT,
   payment_terms TEXT,
-  credit_limit REAL NOT NULL,
+  credit_limit DOUBLE PRECISION NOT NULL,
   payment_history TEXT NOT NULL,
-  annual_revenue_estimate REAL NOT NULL,
+  annual_revenue_estimate DOUBLE PRECISION NOT NULL,
   bank_name TEXT NOT NULL,
   bank_branch TEXT,
   bank_account_type TEXT,
   annual_maintenance_schedule INTEGER NOT NULL DEFAULT 0,
   average_service_calls_per_year INTEGER NOT NULL,
-  last_service_date TEXT,
+  last_service_date DATE,
   upcoming_service TEXT,
   equipment_notes TEXT,
   account_manager TEXT NOT NULL,
   customer_tier TEXT,
-  annual_purchase_volume_min REAL NOT NULL,
-  annual_purchase_volume_max REAL NOT NULL,
-  last_contact_date TEXT,
+  annual_purchase_volume_min DOUBLE PRECISION NOT NULL,
+  annual_purchase_volume_max DOUBLE PRECISION NOT NULL,
+  last_contact_date DATE,
   last_contact_method TEXT,
   last_contact_notes TEXT,
   buying_patterns TEXT NOT NULL,
@@ -85,175 +83,119 @@ CREATE TABLE IF NOT EXISTS farm_customer (
   safety_training_status TEXT,
   environmental_compliance_notes TEXT
 );
-
-
--- CROPS ------------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS crop (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
   crop_type TEXT NOT NULL,
   acreage INTEGER NOT NULL,
-  notes TEXT,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE
+  notes TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_crop_customer ON crop(farm_customer_id);
-
-
--- LIVESTOCK --------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS livestock (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
   livestock_type TEXT NOT NULL,
   head_count INTEGER NOT NULL,
-  notes TEXT,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE
+  notes TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_livestock_customer ON livestock(farm_customer_id);
-
-
--- PRODUCTION METRICS ----------------------------------------------
-
 CREATE TABLE IF NOT EXISTS production_metric (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
   product TEXT NOT NULL,
-  quantity REAL NOT NULL,
-  unit TEXT NOT NULL,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE
+  quantity DOUBLE PRECISION NOT NULL,
+  unit TEXT NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_prodmetric_customer ON production_metric(farm_customer_id);
-
-
--- EQUIPMENT --------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS equipment_item (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
   equipment_type TEXT NOT NULL,
   brand TEXT NOT NULL,
   model TEXT,
   year INTEGER,
   condition TEXT,
-  serial_number TEXT,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE
+  serial_number TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_equipment_item_customer ON equipment_item(farm_customer_id);
-
-
--- PURCHASES --------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS purchase (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
-  purchase_date TEXT NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
+  purchase_date DATE NOT NULL,
   item TEXT NOT NULL,
-  amount REAL NOT NULL,
+  amount DOUBLE PRECISION NOT NULL,
   purchase_order TEXT,
-  notes TEXT,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE
+  notes TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_purchase_customer ON purchase(farm_customer_id);
-
-
--- WARRANTIES -------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS warranty (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
-  equipment_item_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
+  equipment_item_id INTEGER NOT NULL REFERENCES equipment_item(id) ON DELETE CASCADE,
   warranty_type TEXT NOT NULL,
   provider TEXT NOT NULL,
-  start_date TEXT NOT NULL,
-  end_date TEXT NOT NULL,
-  coverage TEXT NOT NULL,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE,
-  FOREIGN KEY(equipment_item_id) REFERENCES equipment_item(id) ON DELETE CASCADE
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  coverage TEXT NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_warranty_customer ON warranty(farm_customer_id);
-
-
--- REPLACEMENT CYCLES ----------------------------------------------
-
 CREATE TABLE IF NOT EXISTS replacement_cycle (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
   equipment_type TEXT NOT NULL,
   estimated_year INTEGER NOT NULL,
-  estimated_value REAL,
-  notes TEXT,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE
+  estimated_value DOUBLE PRECISION,
+  notes TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_replacement_cycle_customer ON replacement_cycle(farm_customer_id);
-
-
--- TRADE-INS --------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS trade_in (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
   equipment TEXT NOT NULL,
   year INTEGER,
   condition TEXT,
-  estimated_value REAL,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE
+  estimated_value DOUBLE PRECISION
 );
 
 CREATE INDEX IF NOT EXISTS idx_trade_in_customer ON trade_in(farm_customer_id);
-
-
--- INSURANCE --------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS insurance_policy (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
   insurance_type TEXT NOT NULL,
   provider TEXT NOT NULL,
   policy_number TEXT NOT NULL,
-  expiration_date TEXT NOT NULL,
-  coverage_amount REAL,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE
+  expiration_date DATE NOT NULL,
+  coverage_amount DOUBLE PRECISION
 );
 
 CREATE INDEX IF NOT EXISTS idx_insurance_policy_customer ON insurance_policy(farm_customer_id);
-
-
--- CONTRACTS --------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS contract (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
   contract_type TEXT NOT NULL,
   contract_number TEXT,
-  start_date TEXT NOT NULL,
-  end_date TEXT,
-  description TEXT,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE
+  start_date DATE NOT NULL,
+  end_date DATE,
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_contract_customer ON contract(farm_customer_id);
-
-
--- LEASES -----------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS lease (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  farm_customer_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  farm_customer_id INTEGER NOT NULL REFERENCES farm_customer(id) ON DELETE CASCADE,
   equipment_type TEXT NOT NULL,
   lease_number TEXT NOT NULL,
-  monthly_payment REAL NOT NULL,
-  start_date TEXT NOT NULL,
-  end_date TEXT NOT NULL,
-  terms TEXT,
-  FOREIGN KEY(farm_customer_id) REFERENCES farm_customer(id) ON DELETE CASCADE
+  monthly_payment DOUBLE PRECISION NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  terms TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_lease_customer ON lease(farm_customer_id);
