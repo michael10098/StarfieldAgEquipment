@@ -1,6 +1,9 @@
-import { Box, IconButton, Drawer, Tooltip } from '@mui/material';
+import { Box, IconButton, Drawer, Tooltip, Tab, Tabs } from '@mui/material';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 import { useDataStore } from './DataStoreProvider';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import DataTable, { GenerateColumns } from './DataTable';
 
@@ -17,10 +20,15 @@ function Sidebar({
   onClose,
   positionFromTop = 16
 }: SidebarProps) {
+  const [value, setValue] = useState('1');
 
   const {
     activeFarmCustomer,
   } = useDataStore();
+
+  const handleTabChange = useCallback((event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  }, [])
 
   const handleClose = useCallback(() => {
     onClose();
@@ -105,10 +113,119 @@ function Sidebar({
           </Box>
         </Box>
         {activeFarmCustomer && (
-          <DataTable
-            data={activeFarmCustomer.crop}
-            columns={GenerateColumns(activeFarmCustomer.crop[0])}
-          />
+          <>
+            <Box sx={{ width: '100%', typography: 'body1' }}>
+              <TabContext value={value}              >
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  <TabList 
+                    variant='scrollable'
+                    onChange={handleTabChange} 
+                    aria-label="lab API tabs example"
+                  >
+                    <Tab label="Crops" value="1" />
+                    <Tab label="Contracts" value="2" />
+                    <Tab label="Equipment" value="3" />
+                    <Tab label="Insurance" value="4" />
+                    <Tab label="Lease" value="5" />
+                    <Tab label="Livestock" value="6" />
+                    <Tab label="Production" value="7" />
+                    <Tab label="Purchase" value="8" />
+                    <Tab label="Replacement" value="9" />
+                    <Tab label="Trade" value="10" />
+                    <Tab label="Warranty" value="11" />
+                  </TabList>
+                </Box>
+                <TabPanel value="1">
+                  {activeFarmCustomer.crop.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.crop}
+                      columns={GenerateColumns(activeFarmCustomer.crop[0])}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel value="2">
+                  {activeFarmCustomer.contract.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.contract}
+                      columns={GenerateColumns(activeFarmCustomer.contract[0])}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel value="3">
+                  {activeFarmCustomer.equipment_item.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.equipment_item}
+                      columns={GenerateColumns(activeFarmCustomer.equipment_item[0])}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel value="4">
+                  {activeFarmCustomer.insurance_policy.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.insurance_policy}
+                      columns={GenerateColumns(activeFarmCustomer.insurance_policy[0])}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel value="5">
+                  {activeFarmCustomer.lease.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.lease}
+                      columns={GenerateColumns(activeFarmCustomer.lease[0])}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel value="6">
+                  {activeFarmCustomer.livestock.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.livestock}
+                      columns={GenerateColumns(activeFarmCustomer.livestock[0])}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel value="7">
+                  {activeFarmCustomer.production_metric.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.production_metric}
+                      columns={GenerateColumns(activeFarmCustomer.production_metric[0])}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel value="8">
+                  {activeFarmCustomer.purchase.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.purchase}
+                      columns={GenerateColumns(activeFarmCustomer.purchase[0])}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel value="9">
+                  {activeFarmCustomer.replacement_cycle.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.replacement_cycle}
+                      columns={GenerateColumns(activeFarmCustomer.replacement_cycle[0])}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel value="10">
+                  {activeFarmCustomer.trade_in.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.trade_in}
+                      columns={GenerateColumns(activeFarmCustomer.trade_in[0])}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel value="11">
+                  {activeFarmCustomer.warranty.length > 0 && (
+                    <DataTable
+                      data={activeFarmCustomer.warranty}
+                      columns={GenerateColumns(activeFarmCustomer.warranty[0])}
+                    />
+                  )}
+                </TabPanel>
+              </TabContext>
+            </Box>
+          </>
         )}
       </Box>
     </Drawer>
