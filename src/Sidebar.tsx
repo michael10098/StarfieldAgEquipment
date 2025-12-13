@@ -1,6 +1,6 @@
 import { Box, IconButton, Drawer, Tooltip } from '@mui/material';
 import { useDataStore } from './DataStoreProvider';
-import { useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import DataTable, { GenerateColumns } from './DataTable';
 
@@ -20,21 +20,7 @@ function Sidebar({
 
   const {
     activeFarmCustomer,
-    activeCrops,
-    loadActiveCrops,
   } = useDataStore();
-
-  // Handle drawer open/close
-  useEffect(() => {
-    async function fetchData() {
-        await loadActiveCrops();
-    }
-    if (isOpen) {
-      if (activeFarmCustomer && !activeCrops) {
-        fetchData();
-      }
-    }
-  }, [activeCrops, activeFarmCustomer, isOpen, loadActiveCrops]);
 
   const handleClose = useCallback(() => {
     onClose();
@@ -118,10 +104,10 @@ function Sidebar({
             </Tooltip>
           </Box>
         </Box>
-        {activeCrops && (
+        {activeFarmCustomer && (
           <DataTable
-            data={activeCrops}
-            columns={GenerateColumns(activeCrops[0])}
+            data={activeFarmCustomer.crop}
+            columns={GenerateColumns(activeFarmCustomer.crop[0])}
           />
         )}
       </Box>

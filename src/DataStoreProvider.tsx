@@ -1,30 +1,27 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useMemo, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Database, Tables } from './supabase.types';
+import { FarmCustomerWithRelations } from './Types';
 
 // Types from your database
 type FarmCustomer = Tables<'farm_customer'>;
-type Crop = Tables<'crop'>;
 
 interface DataStoreState {
   // Data
   allFarmCustomers: FarmCustomer[];
 
   // Active selection
-  activeFarmCustomer: FarmCustomer | undefined;
-  setActiveFarmCustomer: (farmCustomer: FarmCustomer | undefined) => void;
-  activeCrops: Crop[] | undefined;
+  activeFarmCustomer: FarmCustomerWithRelations | undefined;
+  setActiveFarmCustomerId: (farmCustomerId: number | undefined) => void;
 
   // Loading states
   isLoading: boolean;
   loadingStates: {
     loadingFarmCustomers: boolean;
-    loadingActiveCrops: boolean;
   };
 
   // Refresh function
   loadAllFarmCustomers: () => Promise<void>;
-  loadActiveCrops: () => Promise<void>;
 }
 
 const DataStoreContext = createContext<DataStoreState | undefined>(undefined);
@@ -53,13 +50,12 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
   const [allFarmCustomers, setAllFarmCustomers] = useState<FarmCustomer[]>([]);
 
   // Active selection state
-  const [activeFarmCustomer, setActiveFarmCustomer] = useState<FarmCustomer | undefined>(undefined);
-  const [activeCrops, setActiveCrops] = useState<Crop[] | undefined>(undefined);
+  const [activeFarmCustomer, setActiveFarmCustomer] = useState<FarmCustomerWithRelations | undefined>(undefined);
+  const [activeFarmCustomerId, setActiveFarmCustomerId] = useState<number | undefined>(undefined);
 
   // Loading state
   const [loadingStates, setLoadingStates] = useState({
     loadingFarmCustomers: false,
-    loadingActiveCrops: false,
   });
 
   // Compute overall loading state
@@ -89,62 +85,70 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
     }
   }, []); // Empty dependency array - supabase client is stable
 
+  const loadFarmCustomerWithRelations = useCallback(async (farmCustomerId: number) => {
+    try {
+      const { data, error } = await supabase
+        .from('farm_customer')
+        .select(`
+        *,
+        crop (*),
+        contract (*),
+        equipment_item (*),
+        insurance_policy (*),
+        lease (*),
+        livestock (*),
+        production_metric (*),
+        purchase (*),
+        replacement_cycle (*),
+        trade_in (*),
+        warranty (*)
+      `)
+        .eq('id', farmCustomerId)
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error fetching farm customer with relations:', error);
+      return null;
+    }
+  }, []);
+
   // Keep activeFarmCustomer in sync with allFarmCustomers
   useEffect(() => {
-    if (activeFarmCustomer) {
+    if (activeFarmCustomerId) {
       // Find the updated version of the active FarmCustomer
       const updatedFarmCustomer = allFarmCustomers.find(
-        (farmCustomer) => farmCustomer.id === activeFarmCustomer.id
+        (farmCustomer) => farmCustomer.id === activeFarmCustomerId
       );
 
       if (updatedFarmCustomer) {
         // Update to the latest version
-        setActiveFarmCustomer(updatedFarmCustomer);
+        loadFarmCustomerWithRelations(updatedFarmCustomer.id).then((data) => {
+          if (data) {
+            setActiveFarmCustomer(data);
+          }
+        });
       } else {
         // The FarmCustomer was deleted, clear the selection
         setActiveFarmCustomer(undefined);
       }
-      // set the active crops to undefined since the activeFarmCustomer has changed
-      setActiveCrops(undefined);
+    } else {
+      setActiveFarmCustomer(undefined);
     }
-  }, [allFarmCustomers, activeFarmCustomer]);
+  }, [allFarmCustomers, loadFarmCustomerWithRelations, activeFarmCustomerId]);
 
   // Load data on mount - only runs once
   useEffect(() => {
     loadAllFarmCustomers();
   }, [loadAllFarmCustomers]);
 
-  const loadActiveCrops = useCallback(async () => {
-    if (activeFarmCustomer) {
-      setLoadingStates((prev) => ({ ...prev, loadingActiveCrops: true }));
-      try {
-        const { data, error } = await supabase
-          .from('crop')
-          .select('*')
-          .eq('farm_customer_id', activeFarmCustomer.id)
-          .order('acreage', { ascending: true });
-
-        if (error) {
-          throw error;
-        }
-
-        setActiveCrops(data || []);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoadingStates((prev) => ({ ...prev, loadingActiveCrops: false }));
-      }
-    }
-  }, [activeFarmCustomer]); // Dependency on activeFarmCustomer
-
   const value = useMemo(
     () => ({
       loadAllFarmCustomers,
       allFarmCustomers,
       activeFarmCustomer,
-      setActiveFarmCustomer,
-      loadActiveCrops,
-      activeCrops,
+      setActiveFarmCustomerId,
       isLoading,
       loadingStates,
     }),
@@ -152,8 +156,7 @@ export const DataStoreProvider = ({ children }: DataStoreProviderProps) => {
       loadAllFarmCustomers,
       allFarmCustomers,
       activeFarmCustomer,
-      loadActiveCrops,
-      activeCrops,
+      setActiveFarmCustomerId,
       isLoading,
       loadingStates,
     ]

@@ -37,7 +37,7 @@ function UserInterface() {
     loadAllFarmCustomers,
     allFarmCustomers,
     activeFarmCustomer,
-    setActiveFarmCustomer,
+    setActiveFarmCustomerId,
   } = useDataStore();
 
   // UI state
@@ -47,15 +47,15 @@ function UserInterface() {
   const [disabled, setDisabled] = useState(false);
 
   // Callbacks
-  const activateSidebar = useCallback((farmCustomer: FarmCustomer | undefined) => {
-    setActiveFarmCustomer(farmCustomer);
+  const activateSidebar = useCallback((id: number | undefined) => {
+    setActiveFarmCustomerId(id);
     setIsSidebarOpen(true);
-  }, [setActiveFarmCustomer]);
+  }, [setActiveFarmCustomerId]);
 
   const handleCloseSidebar = useCallback(() => {
-    setActiveFarmCustomer(undefined);
+    setActiveFarmCustomerId(undefined);
     setIsSidebarOpen(false);
-  }, [setActiveFarmCustomer]);
+  }, [setActiveFarmCustomerId]);
 
   const handleEditSidebar = useCallback((edit: boolean) => {
     setDisabled(edit);
@@ -130,7 +130,7 @@ function UserInterface() {
                   farmCustomer={farmCustomer}
                   isHighlighted={activeFarmCustomer?.id === farmCustomer.id}
                   disabled={disabled}
-                  onClick={() => activateSidebar(farmCustomer)}
+                  onClick={() => activateSidebar(farmCustomer.id)}
                 />
               ))}
             </ItemGrid>
