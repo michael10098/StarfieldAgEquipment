@@ -1,4 +1,4 @@
-import { Box, IconButton, Drawer, Tooltip, Tab, Tabs } from '@mui/material';
+import { Box, IconButton, Drawer, Tooltip, Tab, } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
@@ -26,7 +26,7 @@ function Sidebar({
     activeFarmCustomer,
   } = useDataStore();
 
-  const handleTabChange = useCallback((event: React.SyntheticEvent, newValue: string) => {
+  const handleTabChange = useCallback((_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   }, [])
 
@@ -48,13 +48,13 @@ function Sidebar({
       onClose={handleClose}
       variant="persistent"
       sx={{
-        width: isOpen ? { xs: '100%', sm: '40%' } : 0,
+        width: isOpen ? { xs: '100%', sm: '100%', md: '100%', lg: '40%', xl: '40%' } : 0,
         flexShrink: 0,
       }}
       slotProps={{
         paper: {
           sx: {
-            width: { xs: '100%', sm: '40%' },
+            width: { xs: '100%', sm: '100%', md: '100%', lg: '40%', xl: '40%' },
             top: `${positionFromTop * 4}px`,
             height: `calc(100% - ${positionFromTop * 4}px)`,
             backgroundColor: 'background.paper',
@@ -76,7 +76,7 @@ function Sidebar({
             position: 'sticky',
             top: 0,
             left: 0,
-            height: 64,
+            height: 16,
             right: 0,
             zIndex: 1,
             backgroundColor: 'grey.300',
@@ -110,6 +110,19 @@ function Sidebar({
                 <ChevronRightIcon style={{ width: 16, height: 16, color: '#4b5563' }} />
               </IconButton>
             </Tooltip>
+            {activeFarmCustomer && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 8,
+                  left: 64,
+                  fontWeight: 700,
+                  color: 'grey.900',
+                  wordBreak: 'break-word',
+                }}>
+                {activeFarmCustomer.legal_name}
+              </Box>
+            )}
           </Box>
         </Box>
         {activeFarmCustomer && (
@@ -117,9 +130,9 @@ function Sidebar({
             <Box sx={{ width: '100%', typography: 'body1' }}>
               <TabContext value={value}              >
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                  <TabList 
+                  <TabList
                     variant='scrollable'
-                    onChange={handleTabChange} 
+                    onChange={handleTabChange}
                     aria-label="lab API tabs example"
                   >
                     <Tab label="Crops" value="1" />
