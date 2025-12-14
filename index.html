@@ -1,13 +1,369 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo-small.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Starfield Ag Equipment</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+	<meta charset="utf-8">
+	<title>Resume - Michael Van Hulle</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+<!-- 
+Easy Profile Template
+http://www.templatemo.com/tm-467-easy-profile
+-->
+	<!-- stylesheet css -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/templatemo-blue.css">
+
+</head>
+<style>
+	th, td {
+  		padding: 5px;
+	}	
+	textarea {
+  		width:100%;
+	}
+</style>
+<body data-spy="scroll" data-target=".navbar-collapse">
+
+<!-- preloader section -->
+<div class="preloader">
+	<div class="sk-spinner sk-spinner-wordpress">
+       <span class="sk-inner-circle"></span>
+     </div>
+</div>
+
+<!-- header section -->
+<header>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<img src="images/tm-easy-profile.jpg" class="img-responsive img-circle tm-border" alt="templatemo easy profile">
+				<hr>
+				<h1 class="tm-title bold shadow">Hi, I am Michael Van Hulle</h1>
+				<h1 class="white bold shadow">Software Engineer</h1>
+				<h3 class="white bold shadow">Please see my latest web site - 
+					<a
+						href="farm/index.html"
+					>
+						Starfield AG Supply
+					</a>
+				</h3>
+				<h4 class="white bold shadow">This website showcases my work with PostgreSQL backends and React frontend components.</h4>
+			</div>
+		</div>
+	</div>
+</header>
+
+<!-- about and skills section -->
+<section class="container">
+	<div class="row">
+		<div class="col-md-6 col-sm-12">
+			<div class="about">
+				<h3 class="accent">My Profile</h3>
+<p>
+    Currently I am looking for employment in the Software Engineering field.
+    Please see my resume <a href="#resume">here</a>
+   			<p>
+			    Please see some fun projects that I have designed -- work projects <a href="#workProjects">here</a> and fun projects <a href="#funProjects">here</a>.
+   			</p>
+   			<p>
+    			My latest project is an Artificial Intelligence (AI) project.  I found the 
+    			scripts for the Simpsons show.  There are 150,000 lines.  Each line has the 
+    			the name of the character and what the character said.  The AI model was generated 
+    			by me.  I run the python script that trains on what the character said.  It uses 
+    			the BERT (Bidirectional Encoder Representations from Transformers) model.  It 
+    			is the same model that Google uses for its search engine.  However, my model 
+    			takes a line of script and tries to predict which character possibility said that 
+    			line.
+   			</p>
+   			<p>
+    			There are many different technologies that were used to design this project.  
+    			I had serve a backend to this website using Express.js.  This website is running in the cloud using AWS Web Services on 
+    			an EC2 machine.  I had to containerize this into a docker container.  When the 
+    			container starts up, it first runs a small linux system that has Node.js on it.  Then 
+    			it starts a Python scrpt that loads the model and all of the text transformers and the BERT model.  
+    			The python script waits on a web socket for requests from the React.js web server application.  
+    			When someone submits a text script, the React.js web server sends a POST TCP command to the Python script.  
+    			This is done internally in the Docker container.  I did it this way to avoid having two Docker containers and 
+    			to avoid CORS rejects over the network (one for python and another for Node.js).  Essentially the React.js web server acts as its own 
+    			front end and has a back end that send a request to the Python script.
+   			</p>
+		</div>
+		</div>
+		<div class="col-md-6 col-sm-12">
+			<div class="skills" id="resume">
+				<h2 class="white">Resume</h2>
+   				<br/>
+   				<br/>
+   				<h1>Michael G. Van Hulle</h1>
+   				<h2>Senior Software Engineer</h2>
+				<a href="/resume.pdf" class="fa fa-file-pdf-o" style="color:rgb(224, 195, 26)"> My Resume in PDF format</a><br/>
+   				<a href="https://www.linkedin.com/in/michael-van-hulle-309546298" class="fa fa-linkedin" style="color:rgb(224, 195, 26)"> https://www.linkedin.com/in/michael-van-hulle-309546298</a><br/>
+				<a href="http://vanhulle.tech" style="color:rgb(224, 195, 26)" class="fa fa-globe"> http://vanhulle.tech</a><br/>
+   				<a href="mailto:Mike@TheComputer.com" class="fa fa fa-envelope" style="color:rgb(224, 195, 26)"> Mike@TheComputer.com</a><br/>
+				<a href="tel:(951) 285-9072" class="fa fa-phone" style="color:rgb(224, 195, 26)"> (951) 285-9072</a><br/>
+				<a href="http://maps.google.com/?q=Riverside, CA" class="fa fa-map-marker" style="color:rgb(224, 195, 26)"></i> Riverside, California, USA</a><br/>
+				<br/>
+				Extensive experience in software development.<br/>
+				Detail-oriented, motivated, multi-tasker with communication skills.<br/>
+			   	Able to work independently with High problem-solving and troubleshooting skills.<br/>
+   				Collaborates with other engineers to build complex software systems emphasizing team building, and technical expertise.<br/>
+   				Always refining application development with a CI/CD workflow.<br/>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-8 col-sm-12">
+			<div class="education">
+   				<h2>Work Experience</h2>
+   				<b>Senior Software Enginner</b><br/>
+   				Sep 2013-Present<br/>
+   				<i>Leverage Information System / NWN Carousel | Riverside, ca</i><br/>
+   				I designed the front-end user Interface software, the Network Video Recorder, and the back end server for a video system.
+   				<ul>
+     			<li>Designed and supported a scalable Video Management System (VMS) for public safety organizations</li>
+     			<li>Interfaced with law enforcement agencies such as the Los Angeles County Sheriff Department, Inglewood, and Redlands Police Departments to ascertain feedback about the system and maintain constant improvements.</li>
+     			<li>Developed a desktop application UI for dispatchers (video viewing) and administrators (system configuration). Integrated Google Mapping APIs, Open Street Maps, and GIS functions to map cameras, enhancing situational awareness.</li>
+     			<li>Developed an image storage and retrieval system. Utilized a fast database design so that images can be quickly found and displayed to the users.  A large scale relational database with fast indexing was used to keep track of images.</li>
+     			<li>Wrote a Network Video Recorder (NVR) in C# as a Windows service.  This robust service is designed for uninterrupted 24/7 operation. This service managed petabytes of recordings from around a hundred cameras retaining video for over one year.</li>
+     			<li>I developed Network Video Recorder on a Linux platform in C++.  This code runs in a Docker container.  It is used to record video cameras and can be used on a rack mountable Linux system or a Raspberry PI device.</li>
+     			<li>Developed a library in C# that can be used to communicate with cameras using ONVIF (Open Network Video Interface Forum).  The ONVIF standard uses SOAP messaging protocol.  For secure communications to the cameras, I added encrypted security authentication to this protocol.</li>
+     			<li>I wrote a ASP.NET MVC CSHTML Razor type application to analyze network video streams. This web application is used to test various streaming formats and to report the CPU usage.</li>
+     			<li>Modified Ffmpeg source code to add accelerated RTSP video requests for fast NVR video transfer. Developed software to backfill missing NVR video.  Ffmpeg is used extensively in my software to encode and decode video.</li>
+     			<li>Enacted a method to watermark, catalog, store and retrieve video in long term storage. Watermarking ensured the video is not tampered with and can be used in a courtroom.</li>
+     			<li>Designed and implemented a centralized server that keeps track of all the devices in the VMS system. All logging, status, and error reporting are managed by this server.  A Postgres relational database was used to store logging information.</li>
+			    <li>Worked as part of a team to design a system written in Java and Javascript used as a web application development to retrieve video from this VMS system on an Android or iPhone.</li>
+     			<li>Designed an ASP.Net service application to interface between systems. Utilized WCF for VMS communication and provided restful web services for external web device integration.  This was used as an API for other parts of the system.</li>
+     			<li>Wrote an application that interfaces with Briefcam, an AI image recognition model that can find objects in a video scene.</li>
+     			<li>In many cases where I worked with TCP/IP networks, I used Wireshark and tcpdump to diagnose and debug network traffic.</li>
+     			<li>Helped to design a guided antenna system written in C++ to deliver a constant stream of video from an aircraft or vehicle at a long distance.</li>
+     			<li>Helped with a project that identifies faulty cameras. I engineered an AI/ML model in Python to identify items such as street and traffic lights to ensure proper camera operational status and ensure camera quality.</li>
+     			<li>Created an application leveraging Sqlite’s advanced indexing capabilities used for quick lookup of automobile license plates. My software used a method to identify similar license plate characters in case of AI misreading the plate number.</li>
+     			<li>Provided mentorship to numerous software engineers with projects that involved adding features to our system.  Collaborated with multiple teams to perform regular code inspection and ensure software meets industry standards.</li>
+    			</ul>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-12">
+			<div class="languages">
+    			<h2>Core Skills</h2>
+    				C#, .NET, ASP.NET, NET Core, LINQ, Microsoft .NET Framework, Entity Framework, Microsoft Azure, DASH and HLS Video formats, video streaming technologies, low-latency video, Java, maven, spring boot, REST, XML, SOAP, WebAPI, Python, SQLite, Git, SQL, PostgreSQL, Microsoft SQL Server, MYSQL, HTML, TheoPlayer, Docker, React.js, AWS, GitHub, Streaming Video Systems, ffmpeg, JavaScript, Wireshark, tcpdump, Agile product development, AI/ML
+			</div>
+		</div>
+	<div class="col-md-4 col-sm-12">
+		<div class="education">
+    			<h2>Education</h2>
+    			<b>University of California, Riverside</b><br/>
+    			<b>Bachelor of Science</b><br/>
+    			Computer Science
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12">
+			<div class="languages" id="workProjects">
+    			<h2>Pictures Of Previous Video Management UI Software</h2>
+				<ul style="list-style-type:none;">
+					<li>
+						<table>
+							<tr>
+								<a href="images/multi-alarm-map.png"><img src="images/multi-alarm-map.png" width="100px"/></a>
+							</tr>
+							<tr>
+								<p>
+									A full mapping system that uses Google, ESRI, and OpenStreet maps.
+									This picture shows cameras that are pointing to an event.  The system 
+									has the ability to point cameras at an event.
+							    </p>
+								<hr>
+						    </tr>
+							<tr>
+								<a href="images/joystickcameraview.png"><img src="images/joystickcameraview.png" width="100px"/></a>
+							</tr>
+							<tr>
+								<p>
+									This shows a live view of cameras on the system.  A database controls the setup of every device on the system.
+								</p>
+								<hr>
+						    </tr>
+							<tr>
+								<a href="images/alertapplied_user.png"><img src="images/alertapplied_user.png" width="100px"/></a>
+							</tr>
+							<tr>
+								<p>
+									This shows a setup screen that is used to control access for each user that is on the system.
+									The system has the ability to set permissions to control access to every area of the software.
+								</p>
+								<hr>
+						    </tr>
+							<tr>
+								<a href="images/network-node-view1.png"><img src="images/network-node-view1.png" width="100px"/></a>
+							</tr>
+							<tr>
+								<p>
+									There is a system in this software that keep track of all of the physical devices and where they connect.
+								</p>
+								<hr>
+						    </tr>
+							<tr>
+								<a href="images/sked_example1.png"><img src="images/sked_example1.png" width="100px"/></a>
+							</tr>
+							<tr>
+								<p>
+									The system has an advanced scheduler that keeps track of events that happen with the cameras.
+								</p>
+								<hr>
+						    </tr>
+							<tr>
+								<a href="images/thumbnails selected.png"><img src="images/thumbnails selected.png" width="100px"/></a>
+							</tr>
+							<tr>
+								<p>
+									To make it easier to find camera recordings, I redesigned the timeline.  I also added thrumbnails to the timeline.
+									This makes it easier for users to find events in the recordings.
+								</p>
+								<hr>
+						    </tr>
+						</table>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12">
+			<div class="languages" id="funProjects">
+				<div>
+					<h2>Simpsons Live AI Model (Currently not working because of cost to run an AWS EC2 server)</h2>
+		            <p>
+						This is a NLP BERT model that can predict which character of the Simpsons possibly said a quote.  
+            	      	This model has been trained on about 150,000 lines of script from each character.
+                	  	There are about 6500 different characters in the script.  
+	                  	However, to simplify things, 
+    	              	only the most popular characters have been trained on this model.
+        	          	Go to: <a href="https://planetclaire.tv/quotes/simpsons/">https://planetclaire.tv/quotes/simpsons/</a> to get quotes from Simpsons shows"
+					</p>
+					</br>
+	          		<p>Please enter a quote that one of the characters may have said and hit the search button:</p>
+					</br>
+					<input type="button" value="Quote 1" onclick="document.getElementById('predictStringIn').value = 'Oh no, you poor thing.'">
+					<input type="button" value="Quote 2" onclick="document.getElementById('predictStringIn').value = 'After pie.'">
+					<input type="button" value="Quote 3" onclick="document.getElementById('predictStringIn').value = 'Maybe it needs more fertilizer.'">
+					<input type="button" value="Quote 4" onclick="document.getElementById('predictStringIn').value = 'They cut out the best word!'">
+					<input type="button" value="Quote 5" onclick="document.getElementById('predictStringIn').value = 'doo...'">
+			        <textarea rows="5" id="predictStringIn">Where's Lisa?</textarea><br/>
+    	      		<input type="submit" id="predictSubmit"></input>
+					</br>
+					<hr>
+			        <p id="predictStringOut">Predict String: </p>
+    	      		<p id="predicted">Predicted: </p>
+        	  		<img id="imagePath" height="100"></img>
+          			<p>Probabilities: </p>
+	          		<ul id="probabilityList">
+    	      		</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 col-sm-12">
+			<div class="contact">
+				<h2>Contact</h2>
+					<a href="/resume.pdf" class="fa fa-file-pdf-o"> My Resume in PDF format</a><br/>
+   					<a href="https://www.linkedin.com/in/michael-van-hulle-309546298" class="fa fa-linkedin"> https://www.linkedin.com/in/michael-van-hulle-309546298</a><br/>
+					<a href="http://vanhulle.tech" class="fa fa-globe"> http://vanhulle.tech</a><br/>
+   					<a href="mailto:Mike@TheComputer.com" class="fa fa fa-envelope"> Mike@TheComputer.com</a><br/>
+					<a href="tel:(951) 285-9072" class="fa fa-phone"> (951) 285-9072</a><br/>
+					<a href="http://maps.google.com/?q=Riverside, CA" class="fa fa-map-marker"></i> Riverside, California, USA</a><br/>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- footer section -->
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<p>Copyright &copy; 2025 Michael Van Hulle</p>
+				<ul class="social-icons">
+					<li><a href="/resume.pdf" class="fa fa-file-pdf-o"></a></li>
+   					<li><a href="https://www.linkedin.com/in/michael-van-hulle-309546298" class="fa fa-linkedin"></a></li>
+					<li><a href="http://vanhulle.tech" class="fa fa-globe"></a></li>
+   					<li><a href="mailto:Mike@TheComputer.com" class="fa fa fa-envelope"></a></li>
+					<li><a href="tel:(951) 285-9072" class="fa fa-phone"></a></li>
+					<li><a href="http://maps.google.com/?q=Riverside, CA" class="fa fa-map-marker"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<!-- javascript js -->	
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>	
+<script src="js/jquery.backstretch.min.js"></script>
+<script src="js/custom.js"></script>
+
+<script>
+	// 1. Select the HTML element
+	const predictSubmit = document.getElementById('predictSubmit')
+	const predictStringIn = document.getElementById('predictStringIn')
+	const predictStringOut = document.getElementById('predictStringOut')
+	const predicted = document.getElementById('predicted')
+	const imagePath = document.getElementById('imagePath')
+	const probabilityList = document.getElementById('probabilityList')
+	// 2. Assign the onclick property
+	predictSubmit.onclick = function() {
+		// Code to be executed when the button is clicked
+		console.log('Button clicked using onclick property!')
+
+		options = {
+    		method: 'POST',
+		    headers: {
+       			'Content-Type': 'text/plain',
+      		},
+      		body: predictStringIn.value
+		}
+	    fetch('/api/predictions', options)
+    	.then((response) => response.text())
+    	.then((data) => {
+      		let data2 = data.replace("Predict string: ", "")
+      		data2 = data2.substring(0, data2.indexOf(",Predicted: ['"))
+			predictStringOut.textContent = "Predict String: " + data2
+		    let data3 = data.substring(data.indexOf(",Predicted: ['") + 14, data.indexOf("']"))
+      		let pred = data3
+			predicted.textContent = pred
+      		if (pred == "Bart Simpson") imagePath.src = "/images/BartSimpson.png"
+        		else if (pred == "Grampa Simpson") imagePath.src = "/images/GrampaSimpson.png"
+        		else if (pred == "Homer Simpson") imagePath.src = "/images/HomerSimpson.png"
+        		else if (pred == "Lisa Simpson") imagePath.src = "/images/LisaSimpson.png"
+        		else if (pred == "Marge Simpson") imagePath.src = "/images/MargeSimpson.png"
+		        else if (pred == "Milhouse Van Houten") imagePath.src = "/images/MilhouseVanHouten.png"
+        		else if (pred == "Ned Flanders") imagePath.src = "/images/NedFlanders.png"
+        		else if (pred == "Nelson Muntz") imagePath.src = "/images/NelsonMuntz.png"
+        		else if (pred == "Groundskeeper Willie") imagePath.src = "/images/GroundskeeperWillie.png"
+			// get the probabilities
+		    let data4 = data.substring(data.indexOf("']") + 2, data.length - 1);
+      		data4 = data4.split('\n');
+      		let probabilityArray = data4.slice(1);
+			// remove all from list
+			while (probabilityList.firstChild) {
+  				probabilityList.removeChild(probabilityList.firstChild);
+			}
+			probabilityArray.forEach(probability => {
+				const newItem = document.createElement('li');
+        		newItem.textContent = probability;
+				probabilityList.appendChild(newItem)
+			});
+    	})
+	};
+</script>
+
+</body>
 </html>
