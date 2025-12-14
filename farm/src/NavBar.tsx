@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, Typography, CircularProgress, Box } from "@mui/material";
 import { useDataStore } from "./DataStoreProvider";
 import { lighten } from '@mui/material/styles';
-import logo from './images/farm_logo.svg';
+import logo from '../images/farm_logo.svg';
 
 interface NavBarProps {
     height?: number;
