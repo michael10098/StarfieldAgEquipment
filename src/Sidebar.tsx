@@ -135,20 +135,27 @@ function Sidebar({
                     onChange={handleTabChange}
                     aria-label="lab API tabs example"
                   >
-                    <Tab label="Crops" value="1" />
-                    <Tab label="Contracts" value="2" />
-                    <Tab label="Equipment" value="3" />
-                    <Tab label="Insurance" value="4" />
-                    <Tab label="Lease" value="5" />
-                    <Tab label="Livestock" value="6" />
-                    <Tab label="Production" value="7" />
-                    <Tab label="Purchase" value="8" />
-                    <Tab label="Replacement" value="9" />
-                    <Tab label="Trade" value="10" />
-                    <Tab label="Warranty" value="11" />
+                    <Tab label="Customer" value="1" />
+                    <Tab label="Crops" value="2" />
+                    <Tab label="Contracts" value="3" />
+                    <Tab label="Equipment" value="4" />
+                    <Tab label="Insurance" value="5" />
+                    <Tab label="Lease" value="6" />
+                    <Tab label="Livestock" value="7" />
+                    <Tab label="Production" value="8" />
+                    <Tab label="Purchase" value="9" />
+                    <Tab label="Replacement" value="10" />
+                    <Tab label="Trade" value="11" />
+                    <Tab label="Warranty" value="12" />
                   </TabList>
                 </Box>
                 <TabPanel value="1">
+                  <DataTable
+                    data={[activeFarmCustomer]}
+                    columns={GenerateColumns(activeFarmCustomer)}
+                  />
+                </TabPanel>
+                <TabPanel value="2">
                   {activeFarmCustomer.crop.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.crop}
@@ -156,7 +163,7 @@ function Sidebar({
                     />
                   )}
                 </TabPanel>
-                <TabPanel value="2">
+                <TabPanel value="3">
                   {activeFarmCustomer.contract.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.contract}
@@ -164,7 +171,7 @@ function Sidebar({
                     />
                   )}
                 </TabPanel>
-                <TabPanel value="3">
+                <TabPanel value="4">
                   {activeFarmCustomer.equipment_item.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.equipment_item}
@@ -172,7 +179,7 @@ function Sidebar({
                     />
                   )}
                 </TabPanel>
-                <TabPanel value="4">
+                <TabPanel value="5">
                   {activeFarmCustomer.insurance_policy.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.insurance_policy}
@@ -180,7 +187,7 @@ function Sidebar({
                     />
                   )}
                 </TabPanel>
-                <TabPanel value="5">
+                <TabPanel value="6">
                   {activeFarmCustomer.lease.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.lease}
@@ -188,7 +195,7 @@ function Sidebar({
                     />
                   )}
                 </TabPanel>
-                <TabPanel value="6">
+                <TabPanel value="7">
                   {activeFarmCustomer.livestock.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.livestock}
@@ -196,7 +203,7 @@ function Sidebar({
                     />
                   )}
                 </TabPanel>
-                <TabPanel value="7">
+                <TabPanel value="8">
                   {activeFarmCustomer.production_metric.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.production_metric}
@@ -204,7 +211,7 @@ function Sidebar({
                     />
                   )}
                 </TabPanel>
-                <TabPanel value="8">
+                <TabPanel value="9">
                   {activeFarmCustomer.purchase.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.purchase}
@@ -212,7 +219,7 @@ function Sidebar({
                     />
                   )}
                 </TabPanel>
-                <TabPanel value="9">
+                <TabPanel value="10">
                   {activeFarmCustomer.replacement_cycle.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.replacement_cycle}
@@ -220,7 +227,7 @@ function Sidebar({
                     />
                   )}
                 </TabPanel>
-                <TabPanel value="10">
+                <TabPanel value="11">
                   {activeFarmCustomer.trade_in.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.trade_in}
@@ -228,7 +235,7 @@ function Sidebar({
                     />
                   )}
                 </TabPanel>
-                <TabPanel value="11">
+                <TabPanel value="12">
                   {activeFarmCustomer.warranty.length > 0 && (
                     <DataTable
                       data={activeFarmCustomer.warranty}
